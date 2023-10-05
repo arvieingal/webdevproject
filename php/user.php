@@ -68,6 +68,35 @@
         }
     }
 
+
+    if(isset($_POST['done_id']) && !empty($_POST['done_id'])){
+        $done_id = $_POST['done_id'];
+
+        $done_id = "UPDATE activity SET Status = 'Done' WHERE Id = '$done_id'";
+
+        if($con->query($done_id)){
+            header ("Location: user.php");
+            exit();
+        }else{
+            echo "Error Marking done the Activity: ".$con->error;
+        }
+    }
+
+    if(isset($_POST['cancel_id']) && !empty($_POST['cancel_id'])){
+        $cancel_id = $_POST['cancel_id'];
+
+        $cancel_id = "UPDATE activity SET Status = 'Cancelled' WHERE Id = '$cancel_id'";
+
+        if($con->query($cancel_id)){
+            header ("Location: user.php");
+            exit();
+        }else{
+            echo "Error Cancelling the Activity: ".$con->error;
+        }
+    }
+
+
+
     if(isset($_POST['delete_id']) && !empty($_POST['delete_id'])){
         $delete_id = $_POST['delete_id'];
 
@@ -190,6 +219,8 @@ if ($show->num_rows > 0) {
             <td><?php echo $row['Remarks'];?></td>
             <td>
                 <form action="" method="POST">
+                    <button type="submit" name="done_id" value="<?php echo $row['Id']; ?>">Done</button>
+                    <button type="submit" name="cancel_id" value="<?php echo $row['Id']; ?>">Cancel</button>
                     <button type="submit" name="delete_id" value="<?php echo $row['Id']; ?>">Delete</button>
                 </form>
             </td>

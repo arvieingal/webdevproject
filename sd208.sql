@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2023 at 02:45 PM
+-- Generation Time: Oct 05, 2023 at 01:15 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -45,8 +45,8 @@ CREATE TABLE `activity` (
 --
 
 INSERT INTO `activity` (`Id`, `Name`, `Date`, `Time`, `Ampm`, `Location`, `Ootd`, `Status`, `Remarks`, `UserId`) VALUES
-(128, 'Bday', '2023-10-05', '08:43', 'am', 'Church', 'Dress', '', '', 24),
-(129, 'asfa', '2023-10-10', '20:46', 'am', 'asdf', 'asdf', '', '', 24);
+(128, 'Bday', '2023-10-05', '08:43', 'am', 'Church', 'Dress', 'Cancelled', '', 24),
+(129, 'asfa', '2023-10-10', '20:46', 'am', 'asdf', 'asdf', 'Cancelled', '', 24);
 
 -- --------------------------------------------------------
 
