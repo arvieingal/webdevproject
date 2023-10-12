@@ -226,7 +226,7 @@ input[type=text]:placeholder {
               </div>
           
               <!-- Login Form -->
-              <form action="php/authenticate.php" method="POST">
+              <form id="login" action="php/authenticate.php" method="POST">
                 <input type="text" id="login" class="fadeIn second" name="email" placeholder="Email">
                 <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password"> <br>
                 <input type="submit" class="fadeIn fourth" value="Log In" style="cursor: pointer;">
@@ -248,7 +248,7 @@ input[type=text]:placeholder {
           <div class="wrapper fadeInDown" id="register">
             <div id="formContent">
               <!-- Registration Form -->
-              <form action="php/submit.php" method="post">
+              <form id="registrationForm" action="php/submit.php" method="post">
                 <br><input type="text" class="fadeIn second" name="firstname" placeholder="Firstname" required>
                 <input type="text" class="fadeIn third" name="lastname" placeholder="Lastname" required> <br>
                 <input type="number" class="fadeIn third" name="age" placeholder="Age" required> <br>
@@ -519,29 +519,6 @@ input[type=text]:placeholder {
           function closeRegistration(){
             register.classList.remove("open-popup");
           }
-
-          document.querySelector('form').addEventListener('submit', function(event) {
-          event.preventDefault();
-
-          // Get form data
-          let formData = new FormData(document.querySelector('form'));
-
-          // Make an AJAX request for validation
-          let xhr = new XMLHttpRequest();
-          xhr.open('POST', 'submit.php', true);
-          xhr.onload = function() {
-              if (xhr.status === 200) {
-                  if (xhr.responseText === 'error') {
-                      // Display error message to the user (firstname, lastname, or email already exists)
-                      alert('Error: firstname, lastname, or email already exists in the database.');
-                  } else if (xhr.responseText === 'success') {
-                      // Proceed with form submission (data is valid)
-                      document.querySelector('form').submit();
-                  }
-              }
-          };
-          xhr.send(formData);
-          });
 
         </script>
         <!-- Footer-->
