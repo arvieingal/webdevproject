@@ -15,7 +15,6 @@ else{
     }
 }
 
-echo $_SESSION['UserID'];
 
 if(isset($_POST['addActivity'])){
 $name = $_POST['name'];

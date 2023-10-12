@@ -17,8 +17,10 @@ if($row["Email"] == $email && $row["Password"] == $password){
     }
     else{
         header("Location: user.php");
+
     }
     $_SESSION["Role"] = $row["Role"];
+    $_SESSION['UserID'] = $row['UserID'];
 }
 else{
     header("Location: ../index.html");

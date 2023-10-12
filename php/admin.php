@@ -326,8 +326,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple">
-                                    
-                            
                                     <thead>
                                         <tr>
                                             <th>Last Name</th>

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 10, 2023 at 11:10 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: Oct 12, 2023 at 01:49 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,7 +38,7 @@ CREATE TABLE `activity` (
   `Status` varchar(50) NOT NULL,
   `Remarks` varchar(255) NOT NULL,
   `UserId` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `activity`
@@ -46,7 +46,8 @@ CREATE TABLE `activity` (
 
 INSERT INTO `activity` (`Id`, `Name`, `Date`, `Time`, `Ampm`, `Location`, `Ootd`, `Status`, `Remarks`, `UserId`) VALUES
 (128, 'Bday', '2023-10-05', '08:43', 'am', 'Church', 'Dress', 'Cancelled', '', 9),
-(129, 'asfa', '2023-10-10', '20:46', 'am', 'asdf', 'asdf', 'Cancelled', '', 9);
+(129, 'asfa', '2023-10-10', '20:46', 'am', 'asdf', 'asdf', 'Done', '', 9),
+(130, 'asdf', '2023-10-13', '08:32', 'am', 'asdf', 'asdf', '', '', 11);
 
 -- --------------------------------------------------------
 
@@ -58,15 +59,21 @@ CREATE TABLE `announcement` (
   `id` int(11) NOT NULL,
   `title` varchar(31) NOT NULL,
   `content` varchar(255) NOT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `UserId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `announcement`
 --
 
-INSERT INTO `announcement` (`id`, `title`, `content`, `createdAt`) VALUES
-(2, 'New Announcement', 'This is a new announcement', '2023-09-26 10:06:22');
+INSERT INTO `announcement` (`id`, `title`, `content`, `createdAt`, `UserId`) VALUES
+(2, 'New Announcement', 'This is a new announcement', '2023-09-26 10:06:22', 1),
+(3, 'Dapat tama', 'ganito kasi yan', '2023-10-12 11:05:30', 0),
+(4, 'asdf', 'asdf', '2023-10-12 11:08:37', 0),
+(5, 'asdf', 'asdf', '2023-10-12 11:10:37', 0),
+(6, 'asdf', 'asdf', '2023-10-12 11:11:25', 0),
+(7, 'asdf', 'asdf', '2023-10-12 11:11:51', 0);
 
 -- --------------------------------------------------------
 
@@ -85,7 +92,7 @@ CREATE TABLE `user` (
   `Password` varchar(50) NOT NULL,
   `Role` varchar(50) NOT NULL DEFAULT 'user',
   `Status` varchar(50) NOT NULL DEFAULT 'Active'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user`
@@ -130,13 +137,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
 
 --
 -- AUTO_INCREMENT for table `announcement`
 --
 ALTER TABLE `announcement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `user`

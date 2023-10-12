@@ -3,8 +3,7 @@
     include_once("../connection/connection.php");
     $con = connection();
     
-    $sql = "SELECT * FROM activity WHERE UserId ORDER BY Date ASC";
-    $show = $con->query($sql) or die($con->error);
+
 
     session_start();
     if($_SESSION["Role"] == null)
@@ -22,11 +21,16 @@
 
     }
 
-    $data = array();
+    $userId = $_SESSION['UserID'];
 
+    $sql = "SELECT * FROM activity WHERE UserId = $userId ";
+    $show = $con->query($sql) or die($con->error);
+
+    $data = [];
     while($row = $show->fetch_assoc()){
         $data[] = $row;
     }
+
 
     if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])){
         $selectedId = $_POST['selected_id'];
@@ -109,7 +113,7 @@
             echo "Error Deleting Activity: ".$con->error;
         }
     }
-    
+
 ?>
     <?php include_once("header.php") ?>
     <!-- Masthead-->
@@ -188,8 +192,6 @@
 
 <h1>Your Activities</h1>
 <?php
-
-
 if ($show->num_rows > 0) {
     // If there are records in the database, display the table
 ?>
@@ -234,6 +236,56 @@ if ($show->num_rows > 0) {
     echo "<p>No records found.</p>";
 }
 ?>
+
+
+
+<h1>Announcement</h1>
+<?php
+$sql = "SELECT announcement.*, user.Firstname, user.Role
+FROM announcement 
+LEFT JOIN user ON announcement.UserId = user.UserID";
+$show = $con->query($sql) or die($con->error);
+
+$data = array();
+
+    while($row = $show->fetch_assoc()){
+        $data[] = $row;
+    }
+
+if ($show->num_rows > 0) {
+    // If there are records in the database, display the table
+?>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Date</th>
+            <th>Name</th>
+            <th>From</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($data as $row): ?>
+        <tr>
+            <td><?php echo $row['title'];?></td>
+            <td><?php echo $row['content'];?></td>
+            <td><?php echo $row['createdAt'];?></td>
+            <td><?php echo $row['Firstname'];?></td> <!-- Display announcer's name -->
+            <td><?php echo $row['Role'];?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?php
+} else {
+    // If no records are found, display a message
+    echo "<p>No records found.</p>";
+}
+?>
+
+
+
         </header>
         <!-- About-->
         

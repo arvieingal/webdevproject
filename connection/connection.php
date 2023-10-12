@@ -15,6 +15,7 @@ function connection(){
     }
 }
 function closeConnection(){
+    global $con;
     $con->close();
 }
 ?>
