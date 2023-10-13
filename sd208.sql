@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 12, 2023 at 01:49 PM
+-- Generation Time: Oct 13, 2023 at 02:46 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -31,8 +31,7 @@ CREATE TABLE `activity` (
   `Id` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Date` date NOT NULL,
-  `Time` varchar(5) NOT NULL,
-  `Ampm` varchar(50) NOT NULL,
+  `Time` time(5) NOT NULL,
   `Location` varchar(255) NOT NULL,
   `Ootd` varchar(255) NOT NULL,
   `Status` varchar(50) NOT NULL,
@@ -44,10 +43,10 @@ CREATE TABLE `activity` (
 -- Dumping data for table `activity`
 --
 
-INSERT INTO `activity` (`Id`, `Name`, `Date`, `Time`, `Ampm`, `Location`, `Ootd`, `Status`, `Remarks`, `UserId`) VALUES
-(128, 'Bday', '2023-10-05', '08:43', 'am', 'Church', 'Dress', 'Cancelled', '', 9),
-(129, 'asfa', '2023-10-10', '20:46', 'am', 'asdf', 'asdf', 'Done', '', 9),
-(130, 'asdf', '2023-10-13', '08:32', 'am', 'asdf', 'asdf', '', '', 11);
+INSERT INTO `activity` (`Id`, `Name`, `Date`, `Time`, `Location`, `Ootd`, `Status`, `Remarks`, `UserId`) VALUES
+(128, 'Bday', '2023-10-05', '08:43:00.00000', 'Church', 'Dress', 'Cancelled', '', 9),
+(129, 'asfa', '2023-10-10', '20:46:00.00000', 'asdf', 'asdf', 'Done', '', 9),
+(130, 'asdf', '2023-10-13', '08:32:00.00000', 'asdf', 'asdf', 'Done', 'yeah', 11);
 
 -- --------------------------------------------------------
 
@@ -69,11 +68,32 @@ CREATE TABLE `announcement` (
 
 INSERT INTO `announcement` (`id`, `title`, `content`, `createdAt`, `UserId`) VALUES
 (2, 'New Announcement', 'This is a new announcement', '2023-09-26 10:06:22', 1),
-(3, 'Dapat tama', 'ganito kasi yan', '2023-10-12 11:05:30', 0),
-(4, 'asdf', 'asdf', '2023-10-12 11:08:37', 0),
-(5, 'asdf', 'asdf', '2023-10-12 11:10:37', 0),
-(6, 'asdf', 'asdf', '2023-10-12 11:11:25', 0),
-(7, 'asdf', 'asdf', '2023-10-12 11:11:51', 0);
+(8, 'Latest Announcement', 'This is for all', '2023-10-13 12:41:13', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `commentId` int(11) NOT NULL,
+  `content` varchar(255) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `editedAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deletedAt` timestamp NULL DEFAULT NULL,
+  `UserId` int(11) NOT NULL,
+  `announcementId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`commentId`, `content`, `createdAt`, `editedAt`, `deletedAt`, `UserId`, `announcementId`) VALUES
+(28, 'hey', '2023-10-13 12:42:40', '2023-10-13 12:42:40', NULL, 2, 0),
+(29, 'hello', '2023-10-13 12:43:00', '2023-10-13 12:43:00', NULL, 11, 0),
+(30, 'last comment', '2023-10-13 12:44:24', '2023-10-13 12:44:24', NULL, 11, 0);
 
 -- --------------------------------------------------------
 
@@ -124,6 +144,12 @@ ALTER TABLE `announcement`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`commentId`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -143,13 +169,19 @@ ALTER TABLE `activity`
 -- AUTO_INCREMENT for table `announcement`
 --
 ALTER TABLE `announcement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `commentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- Constraints for dumped tables

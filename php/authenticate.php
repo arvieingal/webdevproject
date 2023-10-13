@@ -1,29 +1,27 @@
 <?php
 session_start();
 
-include_once("../connection/connection.php");
+include_once( '../connection/connection.php' );
 $con = connection();
 
-$email = $_POST["email"];
-$password = $_POST["password"];
+$email = $_POST[ 'email' ];
+$password = $_POST[ 'password' ];
 
 $sql = "SELECT * FROM user WHERE Email = '".$email."' and Password = '".$password."'";
-$result = $con->query($sql);
+$result = $con->query( $sql );
 $row = $result->fetch_assoc();
 
-if($row["Email"] == $email && $row["Password"] == $password){
-    if($row["Role"]=="admin"){
-        header("Location: admin.php");
-    }
-    else{
-        header("Location: user.php");
+if ( $row[ 'Email' ] == $email && $row[ 'Password' ] == $password ) {
+    if ( $row[ 'Role' ] == 'admin' ) {
+        header( 'Location: admin.php' );
+    } else {
+        header( 'Location: user.php' );
 
     }
-    $_SESSION["Role"] = $row["Role"];
-    $_SESSION['UserID'] = $row['UserID'];
-}
-else{
-    header("Location: ../index.html");
+    $_SESSION[ 'Role' ] = $row[ 'Role' ];
+    $_SESSION[ 'UserID' ] = $row[ 'UserID' ];
+} else {
+    header( 'Location: ../index.html' );
 }
 closeConnection();
 

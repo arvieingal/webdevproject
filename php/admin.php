@@ -18,7 +18,6 @@ $con = connection();
 $sql = "SELECT * FROM user";
 $show = $con->query($sql) or die($con->error);
 
-// Fetch and format data for the pie chart
 $genderData = [
     'Male' => 0,
     'Female' => 0,
@@ -26,7 +25,6 @@ $genderData = [
 ];
 
 while ($row = $show->fetch_assoc()) {
-    // Assuming you have a 'gender' column in your database
     $gender = $row['Gender'];
     if (array_key_exists($gender, $genderData)) {
         $genderData[$gender]++;
@@ -45,43 +43,36 @@ $show = $con->query($sqll) or die($con->error);
 
 while ($row = $show->fetch_assoc()) {
     $monthNumber = $row['MonthNumber'];
-    $activityCounts[$monthNumber - 1] = $row['ActivityCount']; // Subtract 1 to convert to array index
+    $activityCounts[$monthNumber - 1] = $row['ActivityCount'];
 }
 
 $sql = "SELECT * FROM user ORDER BY Lastname ASC";
 $show = $con->query($sql) or die($con->error);
 
+$userId = $_SESSION[ 'UserID' ];
+
+
 $data = array();
 
-// Loop through the query result and fetch each row as an associative array, then add it to the $data array.
 while ($row = $show->fetch_assoc()) {
     $data[] = $row;
 }
 
-// Check if the HTTP request method is POST and the 'edit' button is clicked.
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
-    // Get the selected user's ID from the POST data.
     $selectedId = $_POST['selected_id'];
 
-    // Define an SQL query to select a user by their ID.
     $select_sql = "SELECT * FROM user WHERE UserID = '$selectedId'";
 
-    // Execute the SQL query to retrieve the selected user's data.
     $result = $con->query($select_sql);
 
-    // Check if a user with the specified ID exists.
     if ($result->num_rows == 1) {
-        // Fetch the selected user's data as an associative array.
         $selectedRow = $result->fetch_assoc();
     } else {
-        // Display an error message if the user is not found.
         echo "Record not found.";
     }
 }
 
-// Check if the HTTP request method is POST and the 'update' button is clicked.
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
-    // Get the selected user's ID and updated information from the POST data.
     $selectedId = $_POST['selected_id'];
     $newStatus = $_POST['status'];
     $newLastname = $_POST['lastname'];
@@ -91,19 +82,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
     $newEmail = $_POST['email'];
     $newRole = $_POST['role'];
 
-    // Define an SQL query to update the user's information in the database.
     $update_sql = "UPDATE user SET Status = '$newStatus',Role = '$newRole' WHERE UserID = '$selectedId'";
 
-    // Execute the SQL query to update the user's information.
     if ($con->query($update_sql)) {
-        // Redirect to the 'update.php' page upon successful update.
         header("Location: admin.php");
         exit();
     } else {
-        // Display an error message if the update fails.
         echo "Error updating record: " . $con->error;
     }
 }
+
+// Fetch Own account
+$sql = "SELECT * FROM user Where UserID = $userId";
+$result = $con->query($sql);
+$row = $result->fetch_assoc();
 
 ?>
 
@@ -159,6 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
                 </div>
             </form>
             <!-- Navbar-->
+            <p style="color:white; padding-top: 14px;"><?php echo $row['Firstname']; ?></p>
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
