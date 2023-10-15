@@ -1,9 +1,9 @@
 <?php
 session_start();
-if ( $_SESSION[ 'Role' ] == null ) {
+if ( $_SESSION[ 'role' ] == null ) {
     header( 'Location: ../index.html' );
 } else {
-    if ( $_SESSION[ 'Role' ] == 'admin' ) {
+    if ( $_SESSION[ 'role' ] == 'admin' ) {
 
     } else {
         header( 'Location: ../index.html' );

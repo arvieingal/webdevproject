@@ -4,10 +4,10 @@ session_start();
 include_once( '../connection/connection.php' );
 $con = connection();
 
-if ( $_SESSION[ 'Role' ] == null ) {
+if ( $_SESSION[ 'role' ] == null ) {
     header( 'Location: ../index.html' );
 } else {
-    if ( $_SESSION[ 'Role' ] == 'admin' || $_SESSION[ 'Role' ] == 'user' ) {
+    if ( $_SESSION[ 'role' ] == 'admin' || $_SESSION[ 'role' ] == 'user' ) {
 
     } else {
         header( 'Location: ../index.html' );
@@ -17,24 +17,22 @@ if ( $_SESSION[ 'Role' ] == null ) {
 if ( isset( $_POST[ 'register' ] ) ) {
     $firstname = $_POST[ 'firstname' ];
     $lastname = $_POST[ 'lastname' ];
-    $age = $_POST[ 'age' ];
     $gender = $_POST[ 'gender' ];
-    $address = $_POST[ 'address' ];
     $email = $_POST[ 'email' ];
     $password = $_POST[ 'password' ];
     $role = 'user';
-    $status = ' Active';
+    $status = 'active';
 
-    $stmt = $con->prepare( 'INSERT INTO `user` (`Firstname`, `Lastname`, `Age`, `Address`, `Gender`, `Email`,`Password`, `Role`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)' );
-    $stmt->bind_param( 'sssssssss', $firstname, $lastname, $age, $address, $gender, $email,  $password, $role, $status );
+    $stmt = $con->prepare( 'INSERT INTO `user` (`firstName`, `lastName`, `gender`, `email`,`password`, `role`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?)' );
+    $stmt->bind_param( 'sssssss', $firstname, $lastname, $gender, $email,  $password, $role, $status );
 
     if ( $stmt->execute() ) {
-        $sql = "SELECT * FROM user WHERE Email = '" . $email . "' and Password = '" . $password . "'";
+        $sql = "SELECT * FROM user WHERE email = '" . $email . "' and password = '" . $password . "'";
         $result = $con->query( $sql );
         $row = $result->fetch_assoc();
 
-        $_SESSION[ 'UserID' ] = $row[ 'UserID' ];
-        $_SESSION[ 'Role' ] = $row[ 'Role' ];
+        $_SESSION[ 'userId' ] = $row[ 'userId' ];
+        $_SESSION[ 'role' ] = $row[ 'role' ];
 
         header( 'Location: ../index.html' );
         exit;

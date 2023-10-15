@@ -1,10 +1,10 @@
 <?php
 session_start();
-if($_SESSION["Role"]==null){
+if($_SESSION["role"]==null){
     header("Location: ../index.html");
 }
 else{
-    if($_SESSION["Role"] == "admin"){
+    if($_SESSION["role"] == "admin"){
 
     }
     else{
@@ -25,7 +25,7 @@ $genderData = [
 ];
 
 while ($row = $show->fetch_assoc()) {
-    $gender = $row['Gender'];
+    $gender = $row['gender'];
     if (array_key_exists($gender, $genderData)) {
         $genderData[$gender]++;
     }
@@ -46,10 +46,10 @@ while ($row = $show->fetch_assoc()) {
     $activityCounts[$monthNumber - 1] = $row['ActivityCount'];
 }
 
-$sql = "SELECT * FROM user ORDER BY Lastname ASC";
+$sql = "SELECT * FROM user ORDER BY lastName ASC";
 $show = $con->query($sql) or die($con->error);
 
-$userId = $_SESSION[ 'UserID' ];
+$userId = $_SESSION[ 'userId' ];
 
 
 $data = array();
@@ -61,7 +61,7 @@ while ($row = $show->fetch_assoc()) {
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
     $selectedId = $_POST['selected_id'];
 
-    $select_sql = "SELECT * FROM user WHERE UserID = '$selectedId'";
+    $select_sql = "SELECT * FROM user WHERE userId = '$selectedId'";
 
     $result = $con->query($select_sql);
 
@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
     $newEmail = $_POST['email'];
     $newRole = $_POST['role'];
 
-    $update_sql = "UPDATE user SET Status = '$newStatus',Role = '$newRole' WHERE UserID = '$selectedId'";
+    $update_sql = "UPDATE user SET Status = '$newStatus',Role = '$newRole' WHERE userId = '$selectedId'";
 
     if ($con->query($update_sql)) {
         header("Location: admin.php");
@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
 }
 
 // Fetch Own account
-$sql = "SELECT * FROM user Where UserID = $userId";
+$sql = "SELECT * FROM user Where userId = $userId";
 $result = $con->query($sql);
 $row = $result->fetch_assoc();
 
@@ -151,7 +151,7 @@ $row = $result->fetch_assoc();
                 </div>
             </form>
             <!-- Navbar-->
-            <p style="color:white; padding-top: 14px;"><?php echo $row['Firstname']; ?></p>
+            <p style="color:white; padding-top: 14px;"><?php echo $row['firstName']; ?></p>
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
@@ -323,9 +323,7 @@ $row = $result->fetch_assoc();
                                         <tr>
                                             <th>Last Name</th>
                                             <th>First Name</th>
-                                            <th>Age</th>
                                             <th>Gender</th>
-                                            <th>Address</th>
                                             <th>Email</th>
                                             <th>Status</th>
                                             <th>Role</th>
@@ -336,9 +334,7 @@ $row = $result->fetch_assoc();
                                         <tr>
                                             <th>Last Name</th>
                                             <th>First Name</th>
-                                            <th>Age</th>
                                             <th>Gender</th>
-                                            <th>Address</th>
                                             <th>Email</th>
                                             <th>Status</th>
                                             <th>Role</th>
@@ -348,16 +344,14 @@ $row = $result->fetch_assoc();
                                     <tbody>
                                     <?php foreach ($data as $row): ?>
                                         <tr>
-                                            <td><?php echo $row['Lastname']; ?></td>    
-                                            <td><?php echo $row['Firstname']; ?></td>
-                                            <td><?php echo $row['Age']; ?></td>
-                                            <td><?php echo $row['Gender']; ?></td>
-                                            <td><?php echo $row['Address']; ?></td>
-                                            <td><?php echo $row['Email']; ?></td>
-                                            <td><?php echo $row['Status']; ?></td>
-                                            <td><?php echo $row['Role']; ?></td>
+                                            <td><?php echo $row['lastName']; ?></td>    
+                                            <td><?php echo $row['firstName']; ?></td>
+                                            <td><?php echo $row['gender']; ?></td>
+                                            <td><?php echo $row['email']; ?></td>
+                                            <td><?php echo $row['status']; ?></td>
+                                            <td><?php echo $row['role']; ?></td>
                                             <td><form action="" method="post">
-                                            <button type="button" name="edit" data-user-id="<?php echo $row['UserID']; ?>" data-status="<?php echo $row['Status']; ?>" data-role="<?php echo $row['Role']; ?>">Edit</button>
+                                            <button type="button" name="edit" data-user-id="<?php echo $row['userId']; ?>" data-status="<?php echo $row['status']; ?>" data-role="<?php echo $row['role']; ?>">Edit</button>
                                             </form></td>
                                         </tr>
                                     <?php endforeach; ?>

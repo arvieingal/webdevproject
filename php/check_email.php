@@ -6,7 +6,7 @@ if ( isset( $_POST[ 'email' ] ) ) {
     $email = $_POST[ 'email' ];
 
     // Check if the email exists in the database
-    $sql = "SELECT * FROM user WHERE Email = '$email'";
+    $sql = "SELECT * FROM user WHERE email = '$email'";
     $result = $con->query( $sql );
 
     if ( $result->num_rows > 0 ) {

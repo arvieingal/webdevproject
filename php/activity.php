@@ -3,10 +3,10 @@ session_start();
 include_once( '../connection/connection.php' );
 $con = connection();
 
-if ( $_SESSION[ 'Role' ] == null ) {
+if ( $_SESSION[ 'role' ] == null ) {
     header( 'Location: ../index.html' );
 } else {
-    if ( $_SESSION[ 'Role' ] == 'user' ) {
+    if ( $_SESSION[ 'role' ] == 'user' ) {
 
     } else {
         header( 'Location: ../index.html' );
@@ -14,15 +14,15 @@ if ( $_SESSION[ 'Role' ] == null ) {
 }
 
 if ( isset( $_POST[ 'addActivity' ] ) ) {
-    $name = $_POST[ 'name' ];
+    $name = $_POST[ 'activityname' ];
     $date = $_POST[ 'date' ];
     $time = $_POST[ 'time' ];
     $location = $_POST[ 'location' ];
     $ootd = $_POST[ 'ootd' ];
     $remark = $_POST[ 'remark' ];
-    $userID = $_SESSION[ 'UserID' ];
+    $userId = $_SESSION[ 'userId' ];
 
-    $sql = "INSERT INTO activity (Name,Date,Time,Location,Ootd,Remark,UserId) VALUES ('".$name."','".$date."','".$time."','".$location."','".$ootd."','".$remark."','".$userID."')";
+    $sql = "INSERT INTO activity (activityName,date,time,location,ootd,remarks,userId) VALUES ('".$name."','".$date."','".$time."','".$location."','".$ootd."','".$remark."','".$userId."')";
     $con->query( $sql ) or die ( $con->error );
 
     echo header( 'Location: user.php' );

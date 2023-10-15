@@ -11,15 +11,15 @@ $sql = "SELECT * FROM user WHERE Email = '".$email."' and Password = '".$passwor
 $result = $con->query( $sql );
 $row = $result->fetch_assoc();
 
-if ( $row[ 'Email' ] == $email && $row[ 'Password' ] == $password ) {
-    if ( $row[ 'Role' ] == 'admin' ) {
+if ( $row[ 'email' ] == $email && $row[ 'password' ] == $password ) {
+    if ( $row[ 'role' ] == 'admin' ) {
         header( 'Location: admin.php' );
     } else {
         header( 'Location: user.php' );
 
     }
-    $_SESSION[ 'Role' ] = $row[ 'Role' ];
-    $_SESSION[ 'UserID' ] = $row[ 'UserID' ];
+    $_SESSION[ 'role' ] = $row[ 'role' ];
+    $_SESSION[ 'userId' ] = $row[ 'userId' ];
 } else {
     header( 'Location: ../index.html' );
 }

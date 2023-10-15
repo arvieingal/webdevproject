@@ -55,6 +55,7 @@
     left: 50%;
     transform: translate(-50%, -50%) scale(0.1);
     transition: transform 0.4s, top 0.4s;
+    z-index: 9999;
   }
 
   .open-popup {
@@ -227,8 +228,7 @@
           <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
           <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" onclick="openPopup()">Login</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" onclick="openRegistration()">Signup</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" onclick="openPopup()">Login/Signup</a></li>
         </ul>
       </div>
     </div>
@@ -270,7 +270,6 @@
         <form id="registrationForm" action="php/submit.php" method="post" onsubmit="return validatePassword()">
           <br><input type="text" class="fadeIn second" name="firstname" placeholder="Firstname" required>
           <input type="text" class="fadeIn third" name="lastname" placeholder="Lastname" required> <br>
-          <input type="number" class="fadeIn third" name="age" placeholder="Age" required> <br>
 
           <label>Choose your gender:</label><br>
           <label for="male">Male</label>
@@ -280,16 +279,15 @@
           <label for="others">Others</label>
           <input type="radio" name="gender" id="others" value="Others" style="cursor: pointer; margin-right: 20px;"><br>
 
-          <input name="address" class="fadeIn" placeholder="Address" type="text" required>
           <input name="email" id="email" class="fadeIn" placeholder="Email" type="email" required
             onblur="checkEmailAvailability()">
           <div id="email-validation-message"></div>
           <input id="reg_password" name="password" class="fadeIn" placeholder="Create password" type="password"
             required>
-          <input id="confirmPassword" class="fadeIn" placeholder="Repeat password" type="password" required><br>
+          <input id="confirmPassword" class="fadeIn" placeholder="Repeat password" type="password" required>
           <input id="submit-button" type="submit" class="fadeIn fourth" name="register" value="Create Account"
             style="cursor: pointer;">
-          <p class="text-center" style="color: black;">Have an account?<br><a href="#" onclick="openPopup()">Log In</a>
+          <p class="text-center" style="color: black; margin-top: -20px;">Have an account?<br><a href="#" onclick="openPopup()">Log In</a>
           </p>
           <button class="btn btn-primary btn-block" onclick="closeRegistration()">close</button><br><br>
         </form>

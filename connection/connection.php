@@ -3,7 +3,7 @@ function connection(){
     $host = "localhost";
     $username = "root";
     $password = "";
-    $database = "sd208";
+    $database = "reminder_site";
 
     $con = new mysqli($host, $username, $password, $database);
 
