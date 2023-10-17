@@ -25,12 +25,7 @@ if ( isset( $_POST[ 'addActivity' ] ) ) {
     $sql = "INSERT INTO activity (activityName,date,time,location,ootd,remarks,userId) VALUES ('".$name."','".$date."','".$time."','".$location."','".$ootd."','".$remark."','".$userId."')";
     $con->query( $sql ) or die ( $con->error );
 
-    echo header( 'Location: user.php' );
+    header( 'Location: user.php' );
 
 }
-
-// $sql = 'SELECT * FROM activity WHERE UserId = ' .$userID. '';
-// $result = $con->query( $sql );
-// $row = $result->fetch_assoc();
-
 ?>

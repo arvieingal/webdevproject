@@ -122,25 +122,6 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
     }
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['comment_submit'])) {
-    $comment = $_POST['comment'];
-    $userId = $_SESSION[ 'userId' ];
-    $announcementId = $_SESSION[ 'announcementId' ];
-
-    echo $announcementId;
-
-    // Assuming you have a 'comments' table with columns 'content' and 'createdAt'
-    $sql = "INSERT INTO comment (content, createdAt, userId, announcementId) VALUES ('$comment', NOW(), '$userId', '$announcementId')";
-
-    if ($con->query($sql) === TRUE) {
-        header ("Location: user.php");
-    } else {
-        echo "Error: " . $sql . "<br>" . $con->error;
-    }
-}
-
-
-
 ?>
     <?php include_once("header.php") ?>
     <style>
@@ -328,13 +309,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['comment_submit'])) {
     LEFT JOIN user ON announcement.userId = user.userId";
     $show = $con->query( $sql ) or die( $con->error );
 
-    $_SESSION[ 'announcementId' ] = $row[ 'announcementId' ];
-
     $data = array();
 
     while( $row = $show->fetch_assoc() ) {
         $data[] = $row;
+
+        $_SESSION[ 'announcementId' ] = $row[ 'announcementId' ];
     }
+
+    
 
     if ( $show->num_rows > 0 ) {
         // If there are records in the database, display the table
@@ -361,9 +344,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['comment_submit'])) {
             echo 'No comments yet.';
         }
         ?>
-        <form action = '' method = 'POST'>
-        <p>Comments: <input type = 'text' name = 'comment'></p>
-        <input type = 'submit' name = 'comment_submit'>
+        <form action = "comment.php" method = "POST">
+            <p>Comments: <input type = 'text' name = 'comment'></p>
+            <input type = 'submit' name = 'addComment' value = 'Enter'>
         </form>
         <?php endforeach;
         ?>
