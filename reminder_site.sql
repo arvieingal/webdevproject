@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2023 at 09:38 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Oct 18, 2023 at 01:57 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,7 +37,7 @@ CREATE TABLE `activity` (
   `status` varchar(15) NOT NULL,
   `remarks` varchar(255) NOT NULL,
   `userId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `activity`
@@ -62,7 +62,7 @@ CREATE TABLE `announcement` (
   `editedAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `deletedAt` timestamp NULL DEFAULT NULL,
   `userId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `announcement`
@@ -86,7 +86,7 @@ CREATE TABLE `comment` (
   `deletedAt` timestamp NULL DEFAULT NULL,
   `userId` int(11) NOT NULL,
   `announcementId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `comment`
@@ -94,10 +94,10 @@ CREATE TABLE `comment` (
 
 INSERT INTO `comment` (`commentId`, `content`, `createdAt`, `editedAt`, `deletedAt`, `userId`, `announcementId`) VALUES
 (1, 'hello', '2023-10-15 09:51:48', '2023-10-15 09:51:48', NULL, 2, 1),
-(2, 'hi', '2023-10-15 10:51:57', '2023-10-15 10:51:57', NULL, 2, 0),
+(2, 'hi', '2023-10-15 10:51:57', '2023-10-15 10:51:57', NULL, 2, 1),
 (3, 'new comment', '2023-10-17 07:26:36', '2023-10-17 07:26:36', NULL, 2, 3),
-(4, '', '2023-10-17 07:37:28', '2023-10-17 07:37:28', NULL, 2, 3),
-(5, 'latest comment', '2023-10-17 07:37:33', '2023-10-17 07:37:33', NULL, 2, 3);
+(5, 'latest comment', '2023-10-17 07:37:33', '2023-10-17 07:37:33', NULL, 2, 3),
+(6, 'hey', '2023-10-18 10:44:20', '2023-10-18 10:44:20', NULL, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -114,7 +114,7 @@ CREATE TABLE `user` (
   `password` varchar(31) NOT NULL,
   `role` varchar(11) NOT NULL DEFAULT 'user',
   `status` varchar(11) NOT NULL DEFAULT 'active'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
@@ -173,7 +173,7 @@ ALTER TABLE `announcement`
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `commentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `commentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user`

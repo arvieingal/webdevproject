@@ -21,7 +21,12 @@ if ( isset( $_POST[ 'addComment' ] ) ) {
     $sql = "INSERT INTO comment (content, userId, announcementId) VALUES ('".$comment."','".$userId."','".$announcementId."')";
     $con->query( $sql ) or die ( $con->error );
 
-    header( 'Location: user.php' );
+    
+    if ( $_SESSION[ 'role' ] == 'admin' ) {
+        header( 'Location: admin.php' );
+    } else {
+        header( 'Location: user.php' );
+    }
 
 }
 ?>

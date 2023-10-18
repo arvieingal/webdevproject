@@ -1,107 +1,134 @@
 <?php
-session_start();
-if($_SESSION["role"]==null){
-    header("Location: ../index.html");
-}
-else{
-    if($_SESSION["role"] == "admin"){
-
-    }
-    else{
-        header("Location: ../index.html");
-    }
-}
-
-include_once("../connection/connection.php");
+include_once( '../connection/connection.php' );
 $con = connection();
 
-$sql = "SELECT * FROM user";
-$show = $con->query($sql) or die($con->error);
+session_start();
+if ( $_SESSION[ 'role' ] == null )
+ {
 
-$genderData = [
-    'Male' => 0,
-    'Female' => 0,
-    'Others' => 0
-];
-
-while ($row = $show->fetch_assoc()) {
-    $gender = $row['gender'];
-    if (array_key_exists($gender, $genderData)) {
-        $genderData[$gender]++;
+    header( 'Location: ../index.html' );
+} else {
+    if ( $_SESSION[ 'role' ] == 'user' )
+ {
+    } else {
+        header( 'Location: ../index.html' );
     }
+
 }
-
-$monthLabels = [
-    'January', 'February', 'March', 'April',
-    'May', 'June', 'July', 'August',
-    'September', 'October', 'November', 'December'
-];
-$activityCounts = array_fill(0, 12, 0);
-
-$sqll = "SELECT DATE_FORMAT(Date, '%m') AS MonthNumber, COUNT(*) AS ActivityCount FROM activity GROUP BY MonthNumber";
-$show = $con->query($sqll) or die($con->error);
-
-while ($row = $show->fetch_assoc()) {
-    $monthNumber = $row['MonthNumber'];
-    $activityCounts[$monthNumber - 1] = $row['ActivityCount'];
-}
-
-$sql = "SELECT * FROM user ORDER BY lastName ASC";
-$show = $con->query($sql) or die($con->error);
 
 $userId = $_SESSION[ 'userId' ];
 
+$sql = "SELECT * FROM activity WHERE UserId = $userId ";
+$show = $con->query( $sql ) or die( $con->error );
 
-$data = array();
-
-while ($row = $show->fetch_assoc()) {
+$data = [];
+while( $row = $show->fetch_assoc() ) {
     $data[] = $row;
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
-    $selectedId = $_POST['selected_id'];
+if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'edit' ] ) ) {
+    $selectedId = $_POST[ 'selected_id' ];
 
-    $select_sql = "SELECT * FROM user WHERE userId = '$selectedId'";
+    $select_sql = "SELECT * FROM activity WHERE activityId = '$selectedId'";
 
-    $result = $con->query($select_sql);
+    $result = $con->query( $select_sql );
 
-    if ($result->num_rows == 1) {
+    if ( $result->num_rows == 1 ) {
         $selectedRow = $result->fetch_assoc();
     } else {
-        echo "Record not found.";
+        echo 'Record not found.';
     }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
-    $selectedId = $_POST['selected_id'];
-    $newStatus = $_POST['status'];
-    $newLastname = $_POST['lastname'];
-    $newAge = $_POST['age'];
-    $newGender = $_POST['gender'];
-    $newAddress = $_POST['address'];
-    $newEmail = $_POST['email'];
-    $newRole = $_POST['role'];
+if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
+    // Get the selected user's ID and updated information from the POST data.
+        $selectedId = $_POST['selected_id'];
+        $newName = $_POST['name'];
+        $newDate = $_POST['date'];
+        $newTime = $_POST['time'];
+        $newLocation = $_POST['location'];
+        $newOotd = $_POST['ootd'];
+        $newStatus = $_POST['status'];
+        $newRemarks = $_POST['remarks'];
+    
+        // Define an SQL query to update the user's information in the database.
+    $update_sql = "UPDATE activity SET activityName = '$newName', date = '$newDate', time = '$newTime',location = '$newLocation', ootd = '$newOotd', status = '$newStatus', remarks = '$newRemarks' WHERE activityId = '$selectedId'";
 
-    $update_sql = "UPDATE user SET Status = '$newStatus',Role = '$newRole' WHERE userId = '$selectedId'";
-
-    if ($con->query($update_sql)) {
-        header("Location: admin.php");
-        exit();
-    } else {
-        echo "Error updating record: " . $con->error;
+    // Execute the SQL query to update the user's information.
+        if ($con->query($update_sql)) {
+            // Redirect to the 'update.php' page upon successful update.
+            header("Location: user.php");
+            exit();
+        } else {
+            // Display an error message if the update fails.
+            echo "Error updating record: " . $con->error;
+        }
     }
-}
 
-// Fetch Own account
-$sql = "SELECT * FROM user Where userId = $userId";
-$result = $con->query($sql);
-$row = $result->fetch_assoc();
+
+    if(isset($_POST['done_id']) && !empty($_POST['done_id'])){
+        $done_id = $_POST['done_id'];
+
+        $done_id = "UPDATE activity SET Status = 'Done' WHERE activityId = '$done_id'";
+
+        if($con->query($done_id)){
+            header ("Location: user.php");
+            exit();
+        }else{
+            echo "Error Marking done the Activity: ".$con->error;
+        }
+    }
+
+    if(isset($_POST['remark_id']) && !empty($_POST['remark_id'])){
+        $remark_id = $_POST['remark_id'];
+        $remark = $_POST['remark'];
+
+        $sql = "UPDATE activity SET Remarks = '$remark' WHERE activityId = '$remark_id'";
+
+        if($con->query($sql)){
+            header ("Location: user.php");
+            exit();
+        }else{
+            echo "Error Marking done the Activity: ".$con->error;
+        }
+    }
+
+    if(isset($_POST['cancel_id']) && !empty($_POST['cancel_id'])){
+        $cancel_id = $_POST['cancel_id'];
+
+        $cancel_id = "UPDATE activity SET Status = 'Cancelled' WHERE activityId = '$cancel_id'";
+
+        if($con->query($cancel_id)){
+            header ("Location: user.php");
+            exit();
+        }else{
+            echo "Error Cancelling the Activity: ".$con->error;
+        }
+    }
+
+
+
+    if(isset($_POST['delete_id']) && !empty($_POST['delete_id'])){
+        $delete_id = $_POST['delete_id'];
+
+        $delete_sql = "DELETE FROM activity WHERE activityId = '$delete_id'";
+
+        if($con->query($delete_sql)){
+            header ("Location: user.php");
+            exit();
+        }else{
+            echo "Error Deleting Activity: ".$con->error;
+        }
+    }
+
+
+
+    $sql = "SELECT * FROM user Where userId = $userId";
+    $result = $con->query($sql);
+    $row = $result->fetch_assoc();
 
 ?>
-
-
-
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -115,7 +142,9 @@ $row = $result->fetch_assoc();
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <style>
+        /* CSS for the modal */
         .modal {
+        color: black;
         display: none;
         position: fixed;
         z-index: 1;
@@ -135,6 +164,20 @@ $row = $result->fetch_assoc();
         padding: 20px;
         border: 1px solid #888;
         width: 80%;
+        }
+
+        .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
         }
     </style>
     <body class="sb-nav-fixed">
@@ -170,9 +213,13 @@ $row = $result->fetch_assoc();
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="index.html">
+                            <a class="nav-link" href="user.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Dashboard
+                                Activities
+                            </a>
+                            <a class="nav-link" href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Announcements
                             </a>
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -242,97 +289,9 @@ $row = $result->fetch_assoc();
                             <li class="breadcrumb-item active">Dashboard</li>
                         </ol>
                         <div class="row">
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-area me-1"></i>
-                                        Area Chart Example
-                                    </div>
-                                    <div class="card-body"><canvas id="genderChart"></canvas></div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-bar me-1"></i>
-                                        Bar Chart Example
-                                    </div>
-                                    <div class="card-body"><canvas id="activityBarChart" width="400" height="200"></canvas></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Modal for Edit Records -->
-                        <div id="editModal" class="modal">
-                                    <div class="modal-content">
-                                        <h2>Edit User</h2>
-                                        <form method="post" action="">
-                                        <input type="hidden" name="selected_id" value="">
-                                        Status: <input required type="text" name="status" value=""><br>
-                                        Role: <input required type="text" name="role" value=""><br>
-                                        <button type="submit" name="update">Update</button>
-                                        </form>
-                                        <button type="button" onclick="closeModal()">Close</button>
-                                    </div>
-                                    </div>
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                DataTable Example
-                            </div>
-                            <div class="card-body">
-                                <table id="datatablesSimple">
-                                    <thead>
-                                        <tr>
-                                            <th>Last Name</th>
-                                            <th>First Name</th>
-                                            <th>Gender</th>
-                                            <th>Email</th>
-                                            <th>Status</th>
-                                            <th>Role</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Last Name</th>
-                                            <th>First Name</th>
-                                            <th>Gender</th>
-                                            <th>Email</th>
-                                            <th>Status</th>
-                                            <th>Role</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                    <?php foreach ($data as $row): ?>
-                                        <tr>
-                                            <td><?php echo $row['lastName']; ?></td>    
-                                            <td><?php echo $row['firstName']; ?></td>
-                                            <td><?php echo $row['gender']; ?></td>
-                                            <td><?php echo $row['email']; ?></td>
-                                            <td><?php echo $row['status']; ?></td>
-                                            <td><?php echo $row['role']; ?></td>
-                                            <td><form action="" method="post">
-                                            <button type="button" name="edit" data-user-id="<?php echo $row['userId']; ?>" data-status="<?php echo $row['status']; ?>" data-role="<?php echo $row['role']; ?>">Edit</button>
-                                            </form></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                        <h1>Announcement</h1>
 
-                    <form action="announcement.php" method="post">
-                        <label for="">Announcement:</label><br>
-                        <label for="">Title:</label><br>
-                        <input type="text" name="title"><br>
-                        <label for="">Content:</label><br>
-                        <textarea name="content" id="" cols="30" rows="3"></textarea>
-                        <br>
-                        <input type="submit" value="Submit Announcement">
-                    </form>
-                    <?php
+    <?php
                     $sql = "SELECT announcement.*, user.role
                     FROM announcement 
                     LEFT JOIN user ON announcement.userId = user.userId";
@@ -394,8 +353,6 @@ $row = $result->fetch_assoc();
                             </div>
                         </div>
                     </div>
-
-                    
                 </footer>
             </div>
         </div>
@@ -404,123 +361,6 @@ $row = $result->fetch_assoc();
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="../admin/js/datatables-simple-demo.js"></script>
-        <script>
-            // For Modal
-            // JavaScript for opening the modal and loading content
-        const editModal = document.getElementById('editModal');
-
-        // Function to open the modal and load content
-        function openEditModal(userId, status, role) {
-        // Create the edit form HTML content
-        const editForm = `
-            <h2>Edit User</h2>
-            <form method="post" action="">
-            <input type="hidden" name="selected_id" value="${userId}">
-            Status: <input required type="text" name="status" value="${status}"><br>
-            Role: <input required type="text" name="role" value="${role}"><br>
-            <button type="submit" name="update">Update</button>
-            </form>
-        `;
         
-        // Set the modal content to the edit form
-        editModal.querySelector('.modal-content').innerHTML = editForm;
-        
-        // Display the modal
-        editModal.style.display = 'block';
-        }
-
-        // Function to close the modal
-        function closeModal() {
-        editModal.style.display = 'none';
-        }
-
-        // Event listener for the "Edit" button
-        document.addEventListener('click', function(event) {
-        if (event.target.matches('button[name="edit"]')) {
-            const userId = event.target.dataset.userId;
-            const status = event.target.dataset.status;
-            const role = event.target.dataset.role;
-            openEditModal(userId, status, role);
-        }
-        });
-
-        // Event listener for the modal close button
-        document.querySelector('.modal-content').addEventListener('click', function(event) {
-        if (event.target.matches('button[name="update"]')) {
-            closeModal();
-        }
-        });
-
-        // Close the modal when the user clicks outside of it
-        window.addEventListener('click', function(event) {
-        if (event.target === editModal) {
-            closeModal();
-        }
-        });
-
-
-            // Data for the pie chart
-            const data = {
-                labels: ['Male', 'Female', 'Others'],
-                datasets: [{
-                    data: <?php echo json_encode(array_values($genderData)); ?>,
-                    backgroundColor: ['blue', 'pink', 'gray'], // Colors for each section of the pie chart
-                }]
-            };
-
-            // Get the canvas element
-            const ctx = document.getElementById('genderChart').getContext('2d');
-
-            // Create the pie chart
-            const genderPieChart = new Chart(ctx, {
-                type: 'pie',
-                data: data,
-                options: {
-                    // Set the size of the chart
-                    responsive: false, // Disable responsiveness
-                    maintainAspectRatio: false, // Disable aspect ratio
-                    width: 400, // Set your desired width
-                    height: 400, // Set your desired height
-                }
-            });
-
-            // Generate a legend based on the data
-
-
-        // Data for the bar chart
-        const activitiesData = {
-            labels: <?php echo json_encode($monthLabels); ?>,
-            datasets: [{
-                label: 'Activity Count',
-                data: <?php echo json_encode($activityCounts); ?>,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        };
-
-        // Get the canvas element for the bar chart
-        const activityCtx = document.getElementById('activityBarChart').getContext('2d');
-
-        // Create the bar chart
-        const activityBarChart = new Chart(activityCtx, {
-            type: 'bar',
-            data: activitiesData,
-            options: {
-                responsive: false,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        beginAtZero: true
-                    },
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-
-        </script>
     </body>
 </html>

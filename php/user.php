@@ -122,8 +122,26 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
     }
 
 
+    $sql = "SELECT * FROM user Where userId = $userId";
+    $result = $con->query($sql);
+    $row = $result->fetch_assoc();
+
+
+
 ?>
-    <?php include_once("header.php") ?>
+    <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dashboard - SB Admin</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="../admin/css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
     <style>
         /* CSS for the modal */
         .modal {
@@ -163,314 +181,308 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
         cursor: pointer;
         }
     </style>
-    <!-- Call to action-->
-    <section class = 'page-section bg-dark text-white'>
-    <h1>Edit your Activity</h1>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+            <!-- Navbar-->
+            <p style="color:white; padding-top: 14px;"><?php echo $row['firstName']; ?></p>
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Core</div>
+                            <a class="nav-link" href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Activities
+                            </a>
+                            <a class="nav-link" href="announcement_page.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Announcements
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Layouts
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="layout-static.html">Static Navigation</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                Pages
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                        Authentication
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="login.html">Login</a>
+                                            <a class="nav-link" href="register.html">Register</a>
+                                            <a class="nav-link" href="password.html">Forgot Password</a>
+                                        </nav>
+                                    </div>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
+                                        Error
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="401.html">401 Page</a>
+                                            <a class="nav-link" href="404.html">404 Page</a>
+                                            <a class="nav-link" href="500.html">500 Page</a>
+                                        </nav>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="sb-sidenav-menu-heading">Addons</div>
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Charts
+                            </a>
+                            <a class="nav-link" href="tables.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Tables
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                        <?php echo $row['role']; ?>
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Dashboard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Activities</li>
+                        </ol>
+                        <div class="row">
+                            <h1>Edit your Activity</h1>
 
-<form action="" method="post">
-    <label for="">Select Activity:</label>
-    <select name="selected_id" id="selected_id">
-        <?php foreach($data as $row): ?>
-            <option value="<?php echo $row['activityId'];?>"><?php echo $row['activityName'];?></option>
-        <?php endforeach;?>
-    </select>
-    <button type="submit" name="edit">Edit</button>
-</form>
+                            <form action="" method="post">
+                                <label for="">Select Activity:</label>
+                                <select name="selected_id" id="selected_id">
+                                    <?php foreach($data as $row): ?>
+                                        <option value="<?php echo $row['activityId'];?>"><?php echo $row['activityName'];?></option>
+                                    <?php endforeach;?>
+                                </select>
+                                <button type="submit" name="edit">Edit</button>
+                            </form>
 
-<?php if (isset($selectedRow)): ?>
-<form method="post" action="">
-    <!-- Hidden input to store the selected user's ID. -->
-    <input required type = 'hidden' name = 'selected_id' value = "<?php echo $selectedRow['activityId']; ?>">
-    Activity Name:
-    <input required type = 'text' name = 'name' value = "<?php echo $selectedRow['activityName']; ?>"><br>
-    Date:
-    <input required type = 'text' name = 'date' value = "<?php echo $selectedRow['date']; ?>"><br>
-    Time:
-    <input required type = 'text' name = 'time' value = "<?php echo $selectedRow['time']; ?>"><br>
-    Location:
-    <input required type = 'text' name = 'location' value = "<?php echo $selectedRow['location']; ?>"><br>
-    OOTD:
-    <input required type = 'text' name = 'ootd' value = "<?php echo $selectedRow['ootd']; ?>"><br>
+                            <?php if (isset($selectedRow)): ?>
+                            <form method="post" action="">
+                                <!-- Hidden input to store the selected user's ID. -->
+                                <input required type = 'hidden' name = 'selected_id' value = "<?php echo $selectedRow['activityId']; ?>">
+                                Activity Name:
+                                <input required type = 'text' name = 'name' value = "<?php echo $selectedRow['activityName']; ?>"><br>
+                                Date:
+                                <input required type = 'text' name = 'date' value = "<?php echo $selectedRow['date']; ?>"><br>
+                                Time:
+                                <input required type = 'text' name = 'time' value = "<?php echo $selectedRow['time']; ?>"><br>
+                                Location:
+                                <input required type = 'text' name = 'location' value = "<?php echo $selectedRow['location']; ?>"><br>
+                                OOTD:
+                                <input required type = 'text' name = 'ootd' value = "<?php echo $selectedRow['ootd']; ?>"><br>
 
-    <!-- Add new fields for cancel, done, and remarks -->
-    <label for = 'status'>Status:</label>
-    <select name = 'status' id = 'status'>
-    <option value = ''></option>
-    <option value = 'Done' <?php if ( $selectedRow[ 'status' ] == 'Done' ) echo 'selected';
-    ?>>Done</option>
-    <option value = 'Dancel' <?php if ( $selectedRow[ 'status' ] == 'Cancel' ) echo 'selected';
-    ?>>Cancel</option>
-    </select><br>
-    Remarks:
-    <textarea name = 'remarks'><?php echo $selectedRow[ 'remarks' ];
-    ?></textarea><br>
+                                <!-- Add new fields for cancel, done, and remarks -->
+                                <label for = 'status'>Status:</label>
+                                <select name = 'status' id = 'status'>
+                                <option value = ''></option>
+                                <option value = 'Done' <?php if ( $selectedRow[ 'status' ] == 'Done' ) echo 'selected';
+                                ?>>Done</option>
+                                <option value = 'Dancel' <?php if ( $selectedRow[ 'status' ] == 'Cancel' ) echo 'selected';
+                                ?>>Cancel</option>
+                                </select><br>
+                                Remarks:
+                                <textarea name = 'remarks'><?php echo $selectedRow[ 'remarks' ];
+                                ?></textarea><br>
 
-    <!-- Create a button to trigger the 'update' action. -->
-    <button type = 'submit' name = 'update'>Update</button>
-    </form>
-    <?php endif;
-    ?>
+                                <!-- Create a button to trigger the 'update' action. -->
+                                <button type = 'submit' name = 'update'>Update</button>
+                                </form>
+                                <?php endif;
+                                ?>
+                            </div>
+                            <!-- Modal for Edit Records -->
+                            <button id="addActivityBtn">Add Activity</button>
 
-    <!-- Button to trigger the modal -->
-    <button id="addActivityBtn">Add Activity</button>
+                            <!-- The Modal -->
+                            <div id="addActivityModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <!-- Your form content goes here -->
+                                <form action = 'activity.php' method = 'post'>
+                                <label for = 'name'>Activity Name:</label>
+                                <input type = 'text' id = 'name' name = 'activityname' required><br><br>
 
-    <!-- The Modal -->
-    <div id="addActivityModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <!-- Your form content goes here -->
-        <form action = 'activity.php' method = 'post'>
-        <label for = 'name'>Activity Name:</label>
-        <input type = 'text' id = 'name' name = 'activityname' required><br><br>
+                                <label for = 'date'>Date:</label>
+                                <input type = 'date' id = 'date' name = 'date'required><br><br>
 
-        <label for = 'date'>Date:</label>
-        <input type = 'date' id = 'date' name = 'date'required><br><br>
+                                <label for = 'time'>time:</label>
+                                <input type = 'time' id = 'time' name = 'time' required><br><br>
 
-        <label for = 'time'>time:</label>
-        <input type = 'time' id = 'time' name = 'time' required><br><br>
+                                <label for = 'location'>Location:</label>
+                                <input type = 'text' id = 'location' name = 'location' required><br><br>
 
-        <label for = 'location'>Location:</label>
-        <input type = 'text' id = 'location' name = 'location' required><br><br>
+                                <label for = 'ootd'>Ootd:</label>
+                                <input id = 'ootd' name = 'ootd' required></input><br><br>
 
-        <label for = 'ootd'>Ootd:</label>
-        <input id = 'ootd' name = 'ootd' required></input><br><br>
+                                <input type = 'submit' name = 'addActivity' value = 'Add Activity'>
+                                </form>
+                            </div>
+                            </div>
+                                <div class="card-header">
+                                    <i class="fas fa-table me-1"></i>
+                                    DataTable Example
+                                </div>
+                                <div class="card-body">
+                                <?php
+                                if ( $show->num_rows > 0 ) {
+                                    // If there are records in the database, display the table
+                                    ?>
+                                    <table id="datatablesSimple">
+                                        <thead>
+                                            <tr>
+                                                <th>Activity Name</th>
+                                                <th>Date</th>
+                                                <th>Time</th>
+                                                <th>Location</th>
+                                                <th>OOTD</th>
+                                                <th>Status</th>
+                                                <th>Remarks</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Activity Name</th>
+                                                <th>Date</th>
+                                                <th>Time</th>
+                                                <th>Location</th>
+                                                <th>OOTD</th>
+                                                <th>Status</th>
+                                                <th>Remarks</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                        <?php foreach ($data as $row): ?>
+                                            <tr>
+                                            <td><?php echo $row[ 'activityName' ];
+                                            ?></td>
+                                            <td><?php echo $row[ 'date' ];
+                                            ?></td>
+                                            <td><?php echo $row[ 'time' ];
+                                            ?></td>
+                                            <td><?php echo $row[ 'location' ];
+                                            ?></td>
+                                            <td><?php echo $row[ 'ootd' ];
+                                            ?></td>
+                                            <td><?php echo $row[ 'status' ];
+                                            ?></td>
+                                            <td><?php echo $row[ 'remarks' ];
+                                            ?></td>
+                                            <td>
+                                            <form action = '' method = 'POST'>
+                                            <input type = 'text' name = 'remark'>
+                                            <button type = 'submit' name = 'remark_id' value = "<?php echo $row['activityId']; ?>">Add Remarks</button>
+                                            <button type = 'submit' name = 'done_id' value = "<?php echo $row['activityId']; ?>">Done</button>
+                                            <button type = 'submit' name = 'cancel_id' value = "<?php echo $row['activityId']; ?>">Cancel</button>
+                                            <button type = 'submit' name = 'delete_id' value = "<?php echo $row['activityId']; ?>">Delete</button>
+                                            </form>
+                                            </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                    <?php
+                                    } else {
+                                        // If no records are found, display a message
+                                        echo '<p>No records found.</p>';
+                                    }
+                                    ?>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="../admin/js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="../admin/js/datatables-simple-demo.js"></script>
+        <script>
+        // Get the modal
+        var modal = document.getElementById('addActivityModal');
 
-        <input type = 'submit' name = 'addActivity' value = 'Add Activity'>
-        </form>
-    </div>
-    </div>
+        // Get the button that opens the modal
+        var btn = document.getElementById('addActivityBtn');
 
-    <h1>Your Activities</h1>
-    <?php
-    if ( $show->num_rows > 0 ) {
-        // If there are records in the database, display the table
-        ?>
-        <table>
-        <thead>
-        <tr>
-        <th>Name</th>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Location</th>
-        <th>OOTD</th>
-        <th>Status</th>
-        <th>Remarks</th>
-        <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ( $data as $row ): ?>
-        <tr>
-        <td><?php echo $row[ 'activityName' ];
-        ?></td>
-        <td><?php echo $row[ 'date' ];
-        ?></td>
-        <td><?php echo $row[ 'time' ];
-        ?></td>
-        <td><?php echo $row[ 'location' ];
-        ?></td>
-        <td><?php echo $row[ 'ootd' ];
-        ?></td>
-        <td><?php echo $row[ 'status' ];
-        ?></td>
-        <td><?php echo $row[ 'remarks' ];
-        ?></td>
-        <td>
-        <form action = '' method = 'POST'>
-        <input type = 'text' name = 'remark'>
-        <button type = 'submit' name = 'remark_id' value = "<?php echo $row['activityId']; ?>">Add Remarks</button>
-        <button type = 'submit' name = 'done_id' value = "<?php echo $row['activityId']; ?>">Done</button>
-        <button type = 'submit' name = 'cancel_id' value = "<?php echo $row['activityId']; ?>">Cancel</button>
-        <button type = 'submit' name = 'delete_id' value = "<?php echo $row['activityId']; ?>">Delete</button>
-        </form>
-        </td>
-        </tr>
-        <?php endforeach;
-        ?>
-        </tbody>
-        </table>
-        <?php
-    } else {
-        // If no records are found, display a message
-        echo '<p>No records found.</p>';
-    }
-    ?>
-    </section>
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName('close')[0];
 
-
-
-
-    <!-- Contact-->
-    <section class = 'page-section' id ="contact">
-    <h1>Announcement</h1>
-    <?php
-    $sql = "SELECT announcement.*, user.role
-    FROM announcement 
-    LEFT JOIN user ON announcement.userId = user.userId";
-    $show = $con->query( $sql ) or die( $con->error );
-
-    $data = array();
-
-    while( $row = $show->fetch_assoc() ) {
-        $data[] = $row;
-
-        $_SESSION[ 'announcementId' ] = $row[ 'announcementId' ];
-    }
-
-    
-
-    if ( $show->num_rows > 0 ) {
-        // If there are records in the database, display the table
-        ?>
-        <?php foreach ( $data as $row ): ?>
-            <h4>Title: <?php echo $row[ 'title' ];?></h4>
-            <p>From: <?php echo $row['role'];?> Date: <?php echo $row[ 'createdAt' ];?></p>
-            <p><?php echo $row[ 'content' ];?></p>
-            <h4>Comments: </h4>
-
-        <?php
-        $sql = "SELECT comment.*, user.firstName
-        FROM comment 
-        LEFT JOIN user ON comment.userId = user.userId";
-        $result = $con->query( $sql );
-
-        if ( $result->num_rows > 0 ) {
-            // Output data of each row
-            while( $row = $result->fetch_assoc() ) {
-                echo '<p>From: ' . $row[ 'firstName' ] . ' Date: ' . $row[ 'createdAt' ] . '</p>';
-                echo '<p>' . $row[ 'content' ] . '</p>';
-            }
-        } else {
-            echo 'No comments yet.';
+        // When the user clicks the button, open the modal
+        btn.onclick = function() {
+            modal.style.display = 'block';
         }
-        ?>
-        <form action = "comment.php" method = "POST">
-            <p>Comments: <input type = 'text' name = 'comment'></p>
-            <input type = 'submit' name = 'addComment' value = 'Enter'>
-        </form>
-        <?php endforeach;
-        ?>
-        <?php
-    } else {
-        // If no records are found, display a message
-        echo '<p>No records found.</p>';
-    }
-    $con->close();
-    ?>
-    </section>
 
-    <!-- Contact-->
-  <section class="page-section" id="contact">
-    <div class="container px-4 px-lg-5">
-      <div class="row gx-4 gx-lg-5 justify-content-center">
-        <div class="col-lg-8 col-xl-6 text-center">
-          <h2 class="mt-0">Let's Get In Touch!</h2>
-          <hr class="divider" />
-          <p class="text-muted mb-5">Ready to start your next project with us? Send us a messages and we will get back
-            to you as soon as possible!</p>
-        </div>
-      </div>
-      <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
-        <div class="col-lg-6">
-          <!-- * * * * * * * * * * * * * * *-->
-          <!-- * * SB Forms Contact Form * *-->
-          <!-- * * * * * * * * * * * * * * *-->
-          <!-- This form is pre-integrated with SB Forms.-->
-          <!-- To make this form functional, sign up at-->
-          <!-- https://startbootstrap.com/solution/contact-forms-->
-          <!-- to get an API token!-->
-          <form id="contactForm" data-sb-form-api-token="API_TOKEN">
-            <!-- Name input-->
-            <div class="form-floating mb-3">
-              <input class="form-control" id="name" type="tel" placeholder="Enter your name..."
-                data-sb-validations="required" />
-              <label for="name">Full name</label>
-              <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
-            </div>
-            <!-- Email address input-->
-            <div class="form-floating mb-3">
-              <input class="form-control" id="email" type="tel" placeholder="name@example.com"
-                data-sb-validations="required,email" />
-              <label for="email">Email address</label>
-              <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-              <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
-            </div>
-            <!-- Phone number input-->
-            <div class="form-floating mb-3">
-              <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890"
-                data-sb-validations="required" />
-              <label for="phone">Phone number</label>
-              <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
-            </div>
-            <!-- Message input-->
-            <div class="form-floating mb-3">
-              <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..."
-                style="height: 10rem" data-sb-validations="required"></textarea>
-              <label for="message">Message</label>
-              <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
-            </div>
-            <!-- Submit success message-->
-            <!---->
-            <!-- This is what your users will see when the form-->
-            <!-- has successfully submitted-->
-            <div class="d-none" id="submitSuccessMessage">
-              <div class="text-center mb-3">
-                <div class="fw-bolder">Form submission successful!</div>
-                To activate this form, sign up at
-                <br />
-                <a
-                  href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-              </div>
-            </div>
-            <!-- Submit error message-->
-            <!---->
-            <!-- This is what your users will see when there is-->
-            <!-- an error submitting the form-->
-            <div class="d-none" id="submitErrorMessage">
-              <div class="text-center text-danger mb-3">Error sending message!</div>
-            </div>
-            <!-- Submit Button-->
-            <div class="d-grid"><button class="btn btn-primary btn-xl disabled" id="submitButton"
-                type="submit">Submit</button></div>
-          </form>
-        </div>
-      </div>
-      <div class="row gx-4 gx-lg-5 justify-content-center">
-        <div class="col-lg-4 text-center mb-5 mb-lg-0">
-          <i class="bi-phone fs-2 mb-3 text-muted"></i>
-          <div>+1 (555) 123-4567</div>
-        </div>
-      </div>
-    </div>
-  </section>
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = 'none';
+        }
 
-    <?php include_once( 'footer.php' ) ?>
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
 
-<script>
-    // Get the modal
-var modal = document.getElementById('addActivityModal');
-
-// Get the button that opens the modal
-var btn = document.getElementById('addActivityBtn');
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName('close')[0];
-
-// When the user clicks the button, open the modal
-btn.onclick = function() {
-    modal.style.display = 'block';
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = 'none';
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = 'none';
-    }
-}
-
-</script>
+        </script>
+    </body>
+</html>
