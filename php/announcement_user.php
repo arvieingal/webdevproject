@@ -3,132 +3,25 @@ include_once( '../connection/connection.php' );
 $con = connection();
 
 session_start();
-if ( $_SESSION[ 'role' ] == null )
- {
-
+if ( $_SESSION[ 'role' ] == null ) {
     header( 'Location: ../index.html' );
 } else {
-    if ( $_SESSION[ 'role' ] == 'user' )
- {
+    if ( $_SESSION[ 'role' ] == 'admin' || $_SESSION[ 'role' ] == 'user' ) {
+
     } else {
         header( 'Location: ../index.html' );
     }
-
 }
 
 $userId = $_SESSION[ 'userId' ];
-
-$sql = "SELECT * FROM activity WHERE UserId = $userId ";
-$show = $con->query( $sql ) or die( $con->error );
-
-$data = [];
-while( $row = $show->fetch_assoc() ) {
-    $data[] = $row;
-}
-
-if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'edit' ] ) ) {
-    $selectedId = $_POST[ 'selected_id' ];
-
-    $select_sql = "SELECT * FROM activity WHERE activityId = '$selectedId'";
-
-    $result = $con->query( $select_sql );
-
-    if ( $result->num_rows == 1 ) {
-        $selectedRow = $result->fetch_assoc();
-    } else {
-        echo 'Record not found.';
-    }
-}
-
-if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
-    // Get the selected user's ID and updated information from the POST data.
-        $selectedId = $_POST['selected_id'];
-        $newName = $_POST['name'];
-        $newDate = $_POST['date'];
-        $newTime = $_POST['time'];
-        $newLocation = $_POST['location'];
-        $newOotd = $_POST['ootd'];
-        $newStatus = $_POST['status'];
-        $newRemarks = $_POST['remarks'];
-    
-        // Define an SQL query to update the user's information in the database.
-    $update_sql = "UPDATE activity SET activityName = '$newName', date = '$newDate', time = '$newTime',location = '$newLocation', ootd = '$newOotd', status = '$newStatus', remarks = '$newRemarks' WHERE activityId = '$selectedId'";
-
-    // Execute the SQL query to update the user's information.
-        if ($con->query($update_sql)) {
-            // Redirect to the 'update.php' page upon successful update.
-            header("Location: user.php");
-            exit();
-        } else {
-            // Display an error message if the update fails.
-            echo "Error updating record: " . $con->error;
-        }
-    }
-
-
-    if(isset($_POST['done_id']) && !empty($_POST['done_id'])){
-        $done_id = $_POST['done_id'];
-
-        $done_id = "UPDATE activity SET Status = 'Done' WHERE activityId = '$done_id'";
-
-        if($con->query($done_id)){
-            header ("Location: user.php");
-            exit();
-        }else{
-            echo "Error Marking done the Activity: ".$con->error;
-        }
-    }
-
-    if(isset($_POST['remark_id']) && !empty($_POST['remark_id'])){
-        $remark_id = $_POST['remark_id'];
-        $remark = $_POST['remark'];
-
-        $sql = "UPDATE activity SET Remarks = '$remark' WHERE activityId = '$remark_id'";
-
-        if($con->query($sql)){
-            header ("Location: user.php");
-            exit();
-        }else{
-            echo "Error Marking done the Activity: ".$con->error;
-        }
-    }
-
-    if(isset($_POST['cancel_id']) && !empty($_POST['cancel_id'])){
-        $cancel_id = $_POST['cancel_id'];
-
-        $cancel_id = "UPDATE activity SET Status = 'Cancelled' WHERE activityId = '$cancel_id'";
-
-        if($con->query($cancel_id)){
-            header ("Location: user.php");
-            exit();
-        }else{
-            echo "Error Cancelling the Activity: ".$con->error;
-        }
-    }
-
-
-
-    if(isset($_POST['delete_id']) && !empty($_POST['delete_id'])){
-        $delete_id = $_POST['delete_id'];
-
-        $delete_sql = "DELETE FROM activity WHERE activityId = '$delete_id'";
-
-        if($con->query($delete_sql)){
-            header ("Location: user.php");
-            exit();
-        }else{
-            echo "Error Deleting Activity: ".$con->error;
-        }
-    }
-
-
 
     $sql = "SELECT * FROM user Where userId = $userId";
     $result = $con->query($sql);
     $row = $result->fetch_assoc();
 
 ?>
-    <!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -178,6 +71,42 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
         color: black;
         text-decoration: none;
         cursor: pointer;
+        }
+
+        button{
+            background-color: #f4623a;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 6px 14px;
+            margin: 1px;
+        }
+        input[type=submit]{
+            background-color: #f4623a;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding:6px 14px;
+            margin: 1px;
+        }
+        input,textarea{
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 4px 12px;
+            margin: 1px;
+        }
+        select{
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 6px 12px;
+            margin: 1px;
+        }
+
+        .announce{
+            border: black 1px solid;
+        }
+        .comment{
+            border: black 1px solid;
         }
     </style>
     <body class="sb-nav-fixed">
@@ -291,7 +220,7 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
                         <div class="row">
                         <h1>Announcement</h1>
 
-    <?php
+                    <?php
                     $sql = "SELECT announcement.*, user.role
                     FROM announcement 
                     LEFT JOIN user ON announcement.userId = user.userId";
@@ -299,10 +228,10 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
             
             if ($show->num_rows > 0) {
                 while ($row = $show->fetch_assoc()) {
-                    echo "<h4>Title: " . $row['title'] . "</h4>";
+                    echo "<div class="."announce"."><h4>Title: " . $row['title'] . "</h4>";
                     echo "<p>From: " . $row['role'] . " Date: " . $row['createdAt'] . "</p>";
-                    echo "<p>" . $row['content'] . "</p>";
-                    echo "<h4>Comments:</h4>";
+                    echo "<h3>" . $row['content'] . "</h3></div>";
+                    echo "<div class="."comment"."><h6>Comments:</h6></div>";
             
                     $announcementId = $row['announcementId'];
             
@@ -320,8 +249,8 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
                             // Determine comment author based on user role
                             $commentAuthor = ($comment['role'] == 'admin') ? $comment['role'] : $comment['firstName'];
                     
-                            echo '<p>From: ' . $commentAuthor . ' Date: ' . $comment['createdAt'] . '</p>';
-                            echo '<p>' . $comment['content'] . '</p>';
+                            echo '<div class="comment"><p>From: ' . $commentAuthor . ' Date: ' . $comment['createdAt'] . '</p>';
+                            echo '<h3>' . $comment['content'] . '</h3></div>';
                         }
                     } else {
                         echo 'No comments yet.';
@@ -329,11 +258,12 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
                     
                     
                     // Display comment form for this announcement
-                    echo '<form action="comment.php" method="POST">';
+                    echo '<div class="comment"><form action="comment.php" method="POST">';
                     echo '<input type="hidden" name="announcementId" value="' . $announcementId . '">';
                     echo '<p>Comments: <input type="text" name="comment"></p>';
-                    echo '<input type="submit" name="addComment" value="Enter">';
-                    echo '</form>';
+                    echo '<input type="submit" name="addComment" value="Reply">';
+                    echo '</form></div> ';
+
                 }
             } else {
                 echo '<p>No records found.</p>';

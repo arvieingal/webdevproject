@@ -18,13 +18,15 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' ) {
     // Retrieve the announcement text from the form
     $title = $_POST[ 'title' ];
     $content = $_POST[ 'content' ];
+    $userId = $_SESSION['userId'];
 
     // Perform validation if needed
 
     // Insert the announcement into the database
-    $insertQuery = "INSERT INTO announcement (title,content) VALUES ('$title','$content')";
+    $insertQuery = "INSERT INTO announcement (title,content,userId) VALUES ('$title','$content','$userId')";
     if ( $con->query( $insertQuery ) === TRUE ) {
         echo 'Announcement inserted successfully!';
+        header('Location: announcement_admin.php');
     } else {
         echo 'Error: ' . $con->error;
     }

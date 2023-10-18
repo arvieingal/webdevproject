@@ -13,20 +13,17 @@ if ( $_SESSION[ 'role' ] == null ) {
     }
 }
 
-if ( isset( $_POST[ 'addComment' ] ) ) {
+if (isset($_POST['addComment'])) {
     $comment = $_POST['comment'];
-    $userId = $_SESSION[ 'userId' ];
-    $announcementId = $_SESSION[ 'announcementId' ];
+    $userId = $_SESSION['userId'];
+    $announcementId = $_POST['announcementId']; // Retrieve announcement ID from the form
 
     $sql = "INSERT INTO comment (content, userId, announcementId) VALUES ('".$comment."','".$userId."','".$announcementId."')";
     $con->query( $sql ) or die ( $con->error );
 
-    
-    if ( $_SESSION[ 'role' ] == 'admin' ) {
-        header( 'Location: admin.php' );
+    if ($_SESSION['role'] == 'admin') {
+        header('Location: announcement_admin.php');
     } else {
-        header( 'Location: user.php' );
+        header('Location: announcement_user.php');
     }
-
 }
-?>

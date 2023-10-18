@@ -3,124 +3,19 @@ include_once( '../connection/connection.php' );
 $con = connection();
 
 session_start();
-if ( $_SESSION[ 'role' ] == null )
- {
+if($_SESSION["role"]==null){
+    header("Location: ../index.html");
+}
+else{
+    if($_SESSION["role"] == "admin"){
 
-    header( 'Location: ../index.html' );
-} else {
-    if ( $_SESSION[ 'role' ] == 'user' )
- {
-    } else {
-        header( 'Location: ../index.html' );
     }
-
+    else{
+        header("Location: ../index.html");
+    }
 }
 
 $userId = $_SESSION[ 'userId' ];
-
-$sql = "SELECT * FROM activity WHERE UserId = $userId ";
-$show = $con->query( $sql ) or die( $con->error );
-
-$data = [];
-while( $row = $show->fetch_assoc() ) {
-    $data[] = $row;
-}
-
-if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'edit' ] ) ) {
-    $selectedId = $_POST[ 'selected_id' ];
-
-    $select_sql = "SELECT * FROM activity WHERE activityId = '$selectedId'";
-
-    $result = $con->query( $select_sql );
-
-    if ( $result->num_rows == 1 ) {
-        $selectedRow = $result->fetch_assoc();
-    } else {
-        echo 'Record not found.';
-    }
-}
-
-if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
-    // Get the selected user's ID and updated information from the POST data.
-        $selectedId = $_POST['selected_id'];
-        $newName = $_POST['name'];
-        $newDate = $_POST['date'];
-        $newTime = $_POST['time'];
-        $newLocation = $_POST['location'];
-        $newOotd = $_POST['ootd'];
-        $newStatus = $_POST['status'];
-        $newRemarks = $_POST['remarks'];
-    
-        // Define an SQL query to update the user's information in the database.
-    $update_sql = "UPDATE activity SET activityName = '$newName', date = '$newDate', time = '$newTime',location = '$newLocation', ootd = '$newOotd', status = '$newStatus', remarks = '$newRemarks' WHERE activityId = '$selectedId'";
-
-    // Execute the SQL query to update the user's information.
-        if ($con->query($update_sql)) {
-            // Redirect to the 'update.php' page upon successful update.
-            header("Location: user.php");
-            exit();
-        } else {
-            // Display an error message if the update fails.
-            echo "Error updating record: " . $con->error;
-        }
-    }
-
-
-    if(isset($_POST['done_id']) && !empty($_POST['done_id'])){
-        $done_id = $_POST['done_id'];
-
-        $done_id = "UPDATE activity SET status = 'Done' WHERE activityId = '$done_id'";
-
-        if($con->query($done_id)){
-            header ("Location: user.php");
-            exit();
-        }else{
-            echo "Error Marking done the Activity: ".$con->error;
-        }
-    }
-
-    if(isset($_POST['remark_id'])){
-        $remark_id = $_POST['remark_id'];
-        $remark = $_POST['remark'];
-
-        $remark_id = "UPDATE activity SET remarks = '$remark' WHERE activityId = '$remark_id'";
-
-        if($con->query($remark_id)){
-            header ("Location: user.php");
-            exit();
-        }else{
-            echo "Error Marking done the Activity: ".$con->error;
-        }
-    }
-
-    if(isset($_POST['cancel_id']) && !empty($_POST['cancel_id'])){
-        $cancel_id = $_POST['cancel_id'];
-
-        $cancel_id = "UPDATE activity SET status = 'Cancelled' WHERE activityId = '$cancel_id'";
-
-        if($con->query($cancel_id)){
-            header ("Location: user.php");
-            exit();
-        }else{
-            echo "Error Cancelling the Activity: ".$con->error;
-        }
-    }
-
-
-
-    if(isset($_POST['delete_id']) && !empty($_POST['delete_id'])){
-        $delete_id = $_POST['delete_id'];
-
-        $delete_sql = "DELETE FROM activity WHERE activityId = '$delete_id'";
-
-        if($con->query($delete_sql)){
-            header ("Location: user.php");
-            exit();
-        }else{
-            echo "Error Deleting Activity: ".$con->error;
-        }
-    }
-
 
     $sql = "SELECT * FROM user Where userId = $userId";
     $result = $con->query($sql);
@@ -180,35 +75,6 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
         text-decoration: none;
         cursor: pointer;
         }
-
-        button{
-            background-color: #f4623a;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 6px 14px;
-            margin: 1px;
-        }
-        input[type=submit]{
-            background-color: #f4623a;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding:6px 14px;
-            margin: 1px;
-        }
-        input{
-            border: 1px solid black;
-            border-radius: 10px;
-            padding: 4px 12px;
-            margin: 1px;
-        }
-        select{
-            border: 1px solid black;
-            border-radius: 10px;
-            padding: 6px 12px;
-            margin: 1px;
-        }
     </style>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -243,13 +109,17 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="admin.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Activities
                             </a>
-                            <a class="nav-link" href="announcement_user.php">
+                            <a class="nav-link" href="announcement_admin.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Announcements
+                            </a>
+                            <a class="nav-link" href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Show Activities
                             </a>
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -315,87 +185,26 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
                 <main>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Activities</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">List of all Activities</li>
+                        </ol>
                         <div class="row">
-                            <h3>Edit your Activity</h3>
-
-                            <form action="" method="post">
-                                <label for="">Select Activity:</label>
-                                <select name="selected_id" id="selected_id">
-                                    <?php foreach($data as $row): ?>
-                                        <option value="<?php echo $row['activityId'];?>"><?php echo $row['activityName'];?></option>
-                                    <?php endforeach;?>
-                                </select>
-                                <button type="submit" name="edit" id="editActivity">Edit</button>
-                            </form>
-
-                            <?php if (isset($selectedRow)): ?>
-                            <form method="post" action="">
-                                <!-- Hidden input to store the selected user's ID. -->
-                                <input required type = 'hidden' name = 'selected_id' value = "<?php echo $selectedRow['activityId']; ?>">
-                                Activity Name:
-                                <input required type = 'text' name = 'name' value = "<?php echo $selectedRow['activityName']; ?>"><br>
-                                Date:
-                                <input required type = 'text' name = 'date' value = "<?php echo $selectedRow['date']; ?>"><br>
-                                Time:
-                                <input required type = 'text' name = 'time' value = "<?php echo $selectedRow['time']; ?>"><br>
-                                Location:
-                                <input required type = 'text' name = 'location' value = "<?php echo $selectedRow['location']; ?>"><br>
-                                OOTD:
-                                <input required type = 'text' name = 'ootd' value = "<?php echo $selectedRow['ootd']; ?>"><br>
-
-                                <!-- Add new fields for cancel, done, and remarks -->
-                                <label for = 'status'>Status:</label>
-                                <select name = 'status' id = 'status'>
-                                <option value = ''></option>
-                                <option value = 'Done' <?php if ( $selectedRow[ 'status' ] == 'Done' ) echo 'selected';
-                                ?>>Done</option>
-                                <option value = 'Dancel' <?php if ( $selectedRow[ 'status' ] == 'Cancel' ) echo 'selected';
-                                ?>>Cancel</option>
-                                </select><br>
-                                Remarks:
-                                <textarea name = 'remarks'><?php echo $selectedRow[ 'remarks' ];
-                                ?></textarea><br>
-
-                                <!-- Create a button to trigger the 'update' action. -->
-                                <button type = 'submit' name = 'update'>Update</button>
-                                </form>
-                                <?php endif;
-                                ?>
-                            </div>
-                            <!-- Modal for Edit Records -->
-                            <button id="addActivityBtn">Add Activity</button>
-
-                            <!-- The Modal -->
-                            <div id="addActivityModal" class="modal">
-                            <div class="modal-content">
-                                <span class="close">&times;</span>
-                                <!-- Your form content goes here -->
-                                <form action = 'activity.php' method = 'post'>
-                                <label for = 'name'>Activity Name:</label>
-                                <input type = 'text' id = 'name' name = 'activityname' required><br><br>
-
-                                <label for = 'date'>Date:</label>
-                                <input type = 'date' id = 'date' name = 'date'required><br><br>
-
-                                <label for = 'time'>time:</label>
-                                <input type = 'time' id = 'time' name = 'time' required><br><br>
-
-                                <label for = 'location'>Location:</label>
-                                <input type = 'text' id = 'location' name = 'location' required><br><br>
-
-                                <label for = 'ootd'>Ootd:</label>
-                                <input id = 'ootd' name = 'ootd' required></input><br><br>
-
-                                <input type = 'submit' name = 'addActivity' value = 'Add Activity'>
-                                </form>
-                            </div>
-                            </div>
                                 <div class="card-header">
                                     <i class="fas fa-table me-1"></i>
                                     DataTable Example
                                 </div>
                                 <div class="card-body">
                                 <?php
+                                $sql = "SELECT activity.*, user.firstName 
+                                FROM activity 
+                                INNER JOIN user ON activity.userId = user.userId";
+                                $show = $con->query( $sql ) or die( $con->error );
+
+                                $data = [];
+                                while( $row = $show->fetch_assoc() ) {
+                                    $data[] = $row;
+                                }
+
                                 if ( $show->num_rows > 0 ) {
                                     // If there are records in the database, display the table
                                     ?>
@@ -403,53 +212,38 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
                                         <thead>
                                             <tr>
                                                 <th>Activity Name</th>
+                                                <th>User Name</th>
                                                 <th>Date</th>
                                                 <th>Time</th>
                                                 <th>Location</th>
                                                 <th>OOTD</th>
                                                 <th>Status</th>
                                                 <th>Remarks</th>
-                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
                                                 <th>Activity Name</th>
+                                                <th>User Name</th>
                                                 <th>Date</th>
                                                 <th>Time</th>
                                                 <th>Location</th>
                                                 <th>OOTD</th>
                                                 <th>Status</th>
                                                 <th>Remarks</th>
-                                                <th>Actions</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
                                         <?php foreach ($data as $row): ?>
                                             <tr>
-                                            <td><?php echo $row[ 'activityName' ];
-                                            ?></td>
-                                            <td><?php echo $row[ 'date' ];
-                                            ?></td>
-                                            <td><?php echo $row[ 'time' ];
-                                            ?></td>
-                                            <td><?php echo $row[ 'location' ];
-                                            ?></td>
-                                            <td><?php echo $row[ 'ootd' ];
-                                            ?></td>
-                                            <td><?php echo $row[ 'status' ];
-                                            ?></td>
-                                            <td><?php echo $row[ 'remarks' ];
-                                            ?></td>
-                                            <td>
-                                            <form action = '' method = 'POST'>
-                                            <input type = 'text' name = 'remark'>
-                                            <button type = 'submit' name = 'remark_id' value = "<?php echo $row['activityId']; ?>">Add Remarks</button>
-                                            <button type = 'submit' name = 'done_id' value = "<?php echo $row['activityId']; ?>">Done</button>
-                                            <button type = 'submit' name = 'cancel_id' value = "<?php echo $row['activityId']; ?>">Cancel</button>
-                                            <button type = 'submit' name = 'delete_id' value = "<?php echo $row['activityId']; ?>">Delete</button>
-                                            </form>
-                                            </td>
+                                            <td><?php echo $row[ 'activityName' ];?></td>
+                                            <td><?php echo $row[ 'firstName' ];?></td>
+                                            <td><?php echo $row[ 'date' ];?></td>
+                                            <td><?php echo $row[ 'time' ];?></td>
+                                            <td><?php echo $row[ 'location' ];?></td>
+                                            <td><?php echo $row[ 'ootd' ];?></td>
+                                            <td><?php echo $row[ 'status' ];?></td>
+                                            <td><?php echo $row[ 'remarks' ];?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -482,33 +276,5 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="../admin/js/datatables-simple-demo.js"></script>
-        <script>
-        // Get the modal
-        var modal = document.getElementById('addActivityModal');
-
-        // Get the button that opens the modal
-        var btn = document.getElementById('addActivityBtn');
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName('close')[0];
-
-        // When the user clicks the button, open the modal
-        btn.onclick = function() {
-            modal.style.display = 'block';
-        }
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = 'none';
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
-
-        </script>
     </body>
 </html>

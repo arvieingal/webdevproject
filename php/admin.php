@@ -136,6 +136,21 @@ $row = $result->fetch_assoc();
         border: 1px solid #888;
         width: 80%;
         }
+
+        #genderChart{
+            margin: auto;
+            height: 200px;
+            width: 400px;
+        }
+        #activityBarChart{
+            margin: auto;
+            height: 200px;
+            width: 450px;
+        }
+
+        button:hover{
+            background-color: white;
+        }
     </style>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -170,9 +185,17 @@ $row = $result->fetch_assoc();
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="index.html">
+                            <a class="nav-link" href="#">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
+                            </a>
+                            <a class="nav-link" href="announcement_admin.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Announcement
+                            </a>
+                            <a class="nav-link" href="show_activities.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Show Activities
                             </a>
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -239,7 +262,7 @@ $row = $result->fetch_assoc();
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Dashboard</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Dashboard</li>
+                            <li class="breadcrumb-item active">Edit Users</li>
                         </ol>
                         <div class="row">
                             <div class="col-xl-6">
@@ -313,7 +336,7 @@ $row = $result->fetch_assoc();
                                             <td><?php echo $row['status']; ?></td>
                                             <td><?php echo $row['role']; ?></td>
                                             <td><form action="" method="post">
-                                            <button type="button" name="edit" data-user-id="<?php echo $row['userId']; ?>" data-status="<?php echo $row['status']; ?>" data-role="<?php echo $row['role']; ?>">Edit</button>
+                                            <button style="background-color: #f4623a; border: none; color:white; border-radius: 10rem; padding:8px 16px;" type="button" name="edit" data-user-id="<?php echo $row['userId']; ?>" data-status="<?php echo $row['status']; ?>" data-role="<?php echo $row['role']; ?>">Edit</button>
                                             </form></td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -323,65 +346,6 @@ $row = $result->fetch_assoc();
                         </div>
                     </div>
 
-                    <form action="announcement.php" method="post">
-                        <label for="">Announcement:</label><br>
-                        <label for="">Title:</label><br>
-                        <input type="text" name="title"><br>
-                        <label for="">Content:</label><br>
-                        <textarea name="content" id="" cols="30" rows="3"></textarea>
-                        <br>
-                        <input type="submit" value="Submit Announcement">
-                    </form>
-                    <?php
-                    $sql = "SELECT announcement.*, user.role
-                    FROM announcement 
-                    LEFT JOIN user ON announcement.userId = user.userId";
-            $show = $con->query($sql) or die($con->error);
-            
-            if ($show->num_rows > 0) {
-                while ($row = $show->fetch_assoc()) {
-                    echo "<h4>Title: " . $row['title'] . "</h4>";
-                    echo "<p>From: " . $row['role'] . " Date: " . $row['createdAt'] . "</p>";
-                    echo "<p>" . $row['content'] . "</p>";
-                    echo "<h4>Comments:</h4>";
-            
-                    $announcementId = $row['announcementId'];
-            
-                    $_SESSION['announcementId'] = $announcementId;
-            
-                    $commentSql = "SELECT comment.*, user.firstName, user.role
-                                   FROM comment 
-                                   LEFT JOIN user ON comment.userId = user.userId
-                                   WHERE comment.announcementId = $announcementId";
-            
-                    $commentResult = $con->query($commentSql);
-            
-                    if ($commentResult->num_rows > 0) {
-                        while ($comment = $commentResult->fetch_assoc()) {
-                            // Determine comment author based on user role
-                            $commentAuthor = ($comment['role'] == 'admin') ? $comment['role'] : $comment['firstName'];
-                    
-                            echo '<p>From: ' . $commentAuthor . ' Date: ' . $comment['createdAt'] . '</p>';
-                            echo '<p>' . $comment['content'] . '</p>';
-                        }
-                    } else {
-                        echo 'No comments yet.';
-                    }
-                    
-                    
-                    // Display comment form for this announcement
-                    echo '<form action="comment.php" method="POST">';
-                    echo '<input type="hidden" name="announcementId" value="' . $announcementId . '">';
-                    echo '<p>Comments: <input type="text" name="comment"></p>';
-                    echo '<input type="submit" name="addComment" value="Enter">';
-                    echo '</form>';
-                }
-            } else {
-                echo '<p>No records found.</p>';
-            }
-            
-            $con->close();
-            ?>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -464,7 +428,7 @@ $row = $result->fetch_assoc();
                 labels: ['Male', 'Female', 'Others'],
                 datasets: [{
                     data: <?php echo json_encode(array_values($genderData)); ?>,
-                    backgroundColor: ['blue', 'pink', 'gray'], // Colors for each section of the pie chart
+                    backgroundColor: ['#0d6efd', '#f4623a', '#343a40'], // Colors for each section of the pie chart
                 }]
             };
 
@@ -478,9 +442,7 @@ $row = $result->fetch_assoc();
                 options: {
                     // Set the size of the chart
                     responsive: false, // Disable responsiveness
-                    maintainAspectRatio: false, // Disable aspect ratio
-                    width: 400, // Set your desired width
-                    height: 400, // Set your desired height
+                    maintainAspectRatio: false // Disable aspect ratio
                 }
             });
 
@@ -493,7 +455,7 @@ $row = $result->fetch_assoc();
             datasets: [{
                 label: 'Activity Count',
                 data: <?php echo json_encode($activityCounts); ?>,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                backgroundColor: '#0d6efd',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2023 at 01:57 PM
+-- Generation Time: Oct 18, 2023 at 08:14 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -44,9 +44,9 @@ CREATE TABLE `activity` (
 --
 
 INSERT INTO `activity` (`activityId`, `activityName`, `date`, `time`, `location`, `ootd`, `status`, `remarks`, `userId`) VALUES
-(1, 'Deadline', '2023-10-19', '21:00:00', 'USC', 'uniform', 'Done', 'it was deadly', 2),
-(2, 'New Year', '2024-01-01', '01:00:00', 'Tondo', 'anywhat', '', 'it was fun', 2),
-(3, 'asdf', '2023-10-06', '03:36:00', 'asdf', 'asdf', '', '', 2);
+(1, 'Deadline', '2023-10-19', '21:00:00', 'USC', 'uniform', '', 'asdf', 2),
+(3, 'asdf', '2023-10-06', '03:36:00', 'asdf', 'asdf', 'Done', '', 2),
+(4, 'Deadline for tomorrow', '2023-10-19', '18:00:00', 'USC', 'uniform', '', 'sana ma move', 2);
 
 -- --------------------------------------------------------
 
@@ -70,7 +70,9 @@ CREATE TABLE `announcement` (
 
 INSERT INTO `announcement` (`announcementId`, `title`, `content`, `createdAt`, `editedAt`, `deletedAt`, `userId`) VALUES
 (1, 'For Users', 'This is for all', '2023-10-15 08:24:24', '2023-10-15 08:24:24', NULL, 1),
-(3, 'Second Announcement', 'Second Content', '2023-10-15 10:45:19', '2023-10-15 10:45:19', NULL, 0);
+(7, 'test', 'test', '2023-10-18 12:48:14', '2023-10-18 12:48:14', NULL, 1),
+(8, 'latest', 'latest', '2023-10-18 14:04:28', '2023-10-18 14:04:28', NULL, 1),
+(9, 'test test', 'test', '2023-10-18 14:18:54', '2023-10-18 14:18:54', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -94,10 +96,11 @@ CREATE TABLE `comment` (
 
 INSERT INTO `comment` (`commentId`, `content`, `createdAt`, `editedAt`, `deletedAt`, `userId`, `announcementId`) VALUES
 (1, 'hello', '2023-10-15 09:51:48', '2023-10-15 09:51:48', NULL, 2, 1),
-(2, 'hi', '2023-10-15 10:51:57', '2023-10-15 10:51:57', NULL, 2, 1),
-(3, 'new comment', '2023-10-17 07:26:36', '2023-10-17 07:26:36', NULL, 2, 3),
-(5, 'latest comment', '2023-10-17 07:37:33', '2023-10-17 07:37:33', NULL, 2, 3),
-(6, 'hey', '2023-10-18 10:44:20', '2023-10-18 10:44:20', NULL, 1, 3);
+(7, 'hmm', '2023-10-18 12:55:03', '2023-10-18 12:55:03', NULL, 1, 7),
+(21, 'new', '2023-10-18 14:18:30', '2023-10-18 14:18:30', NULL, 1, 8),
+(22, 'for user', '2023-10-18 14:18:38', '2023-10-18 14:18:38', NULL, 1, 1),
+(23, 'how about this?', '2023-10-18 18:10:37', '2023-10-18 18:10:37', NULL, 2, 9),
+(24, 'another 1', '2023-10-18 18:10:42', '2023-10-18 18:10:42', NULL, 2, 9);
 
 -- --------------------------------------------------------
 
@@ -123,7 +126,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`userId`, `firstName`, `lastName`, `gender`, `email`, `password`, `role`, `status`) VALUES
 (1, 'Arvie', 'Ingal', 'Male', 'arvie@gmail.com', 'gwapo', 'admin', 'active'),
 (2, 'Nicole May', 'Abejar', 'Female', 'nicole@gmail.com', 'gwapa', 'user', 'active'),
-(3, 'Bryan', 'Alcover', 'Others', 'bryan@gmail.com', 'bayot', 'user', 'active');
+(3, 'Bryan', 'Alcover', 'Others', 'bryan@gmail.com', 'bayot', 'user', 'deactivate'),
+(4, 'Aviella', 'Cardines', 'Female', 'aviella@gmail.com', 'gwapa', 'user', 'active');
 
 --
 -- Indexes for dumped tables
@@ -161,25 +165,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `activityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `activityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `announcement`
 --
 ALTER TABLE `announcement`
-  MODIFY `announcementId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `announcementId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `commentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `commentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
