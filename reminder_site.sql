@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2023 at 08:14 PM
+-- Generation Time: Oct 19, 2023 at 05:53 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -44,7 +44,7 @@ CREATE TABLE `activity` (
 --
 
 INSERT INTO `activity` (`activityId`, `activityName`, `date`, `time`, `location`, `ootd`, `status`, `remarks`, `userId`) VALUES
-(1, 'Deadline', '2023-10-19', '21:00:00', 'USC', 'uniform', '', 'asdf', 2),
+(1, 'Deadline', '2023-10-19', '21:00:00', 'USC', 'uniform', '', '', 2),
 (3, 'asdf', '2023-10-06', '03:36:00', 'asdf', 'asdf', 'Done', '', 2),
 (4, 'Deadline for tomorrow', '2023-10-19', '18:00:00', 'USC', 'uniform', '', 'sana ma move', 2);
 
@@ -72,7 +72,8 @@ INSERT INTO `announcement` (`announcementId`, `title`, `content`, `createdAt`, `
 (1, 'For Users', 'This is for all', '2023-10-15 08:24:24', '2023-10-15 08:24:24', NULL, 1),
 (7, 'test', 'test', '2023-10-18 12:48:14', '2023-10-18 12:48:14', NULL, 1),
 (8, 'latest', 'latest', '2023-10-18 14:04:28', '2023-10-18 14:04:28', NULL, 1),
-(9, 'test test', 'test', '2023-10-18 14:18:54', '2023-10-18 14:18:54', NULL, 1);
+(9, 'test test', 'test', '2023-10-18 14:18:54', '2023-10-18 14:18:54', NULL, 1),
+(10, 'latest announcement', 'our website is about to be finish', '2023-10-19 03:48:07', '2023-10-19 03:48:07', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -100,7 +101,9 @@ INSERT INTO `comment` (`commentId`, `content`, `createdAt`, `editedAt`, `deleted
 (21, 'new', '2023-10-18 14:18:30', '2023-10-18 14:18:30', NULL, 1, 8),
 (22, 'for user', '2023-10-18 14:18:38', '2023-10-18 14:18:38', NULL, 1, 1),
 (23, 'how about this?', '2023-10-18 18:10:37', '2023-10-18 18:10:37', NULL, 2, 9),
-(24, 'another 1', '2023-10-18 18:10:42', '2023-10-18 18:10:42', NULL, 2, 9);
+(24, 'another 1', '2023-10-18 18:10:42', '2023-10-18 18:10:42', NULL, 2, 9),
+(25, 'hey', '2023-10-19 03:29:28', '2023-10-19 03:29:28', NULL, 2, 9),
+(26, 'this is for the first announcement', '2023-10-19 03:29:43', '2023-10-19 03:29:43', NULL, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -171,13 +174,13 @@ ALTER TABLE `activity`
 -- AUTO_INCREMENT for table `announcement`
 --
 ALTER TABLE `announcement`
-  MODIFY `announcementId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `announcementId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `commentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `commentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `user`

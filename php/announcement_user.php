@@ -103,10 +103,26 @@ $userId = $_SESSION[ 'userId' ];
         }
 
         .announce{
-            border: black 1px solid;
+            margin: 20px auto 0 auto;
+            border: black 4px solid;
+            padding: 20px;
+            width: 80%;
+            border-radius: 30px;
+        }
+        .announce h3{
+            padding-left: 60px;
         }
         .comment{
             border: black 1px solid;
+            margin: 30px auto;
+            padding: 20px;
+            color: #0a58ca;
+            width: 80%;
+            border-radius: 30px;
+        }
+        .commentReply{
+            border-bottom: 1px solid black;
+            padding: 20px;
         }
     </style>
     <body class="sb-nav-fixed">
@@ -123,7 +139,7 @@ $userId = $_SESSION[ 'userId' ];
                 </div>
             </form>
             <!-- Navbar-->
-            <p style="color:white; padding-top: 14px;"><?php echo $row['firstName']; ?></p>
+            <h5 style="color:white; padding-top: 6px;"><?php echo $row['firstName']; ?></h5>
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
@@ -206,7 +222,7 @@ $userId = $_SESSION[ 'userId' ];
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        <?php echo $row['role']; ?>
+                        <h5><?php echo $row['role']; ?></h5>
                     </div>
                 </nav>
             </div>
@@ -231,7 +247,7 @@ $userId = $_SESSION[ 'userId' ];
                     echo "<div class="."announce"."><h4>Title: " . $row['title'] . "</h4>";
                     echo "<p>From: " . $row['role'] . " Date: " . $row['createdAt'] . "</p>";
                     echo "<h3>" . $row['content'] . "</h3></div>";
-                    echo "<div class="."comment"."><h6>Comments:</h6></div>";
+                    echo "<div class="."comment"."><h4>Comments:</h4>";
             
                     $announcementId = $row['announcementId'];
             
@@ -249,19 +265,19 @@ $userId = $_SESSION[ 'userId' ];
                             // Determine comment author based on user role
                             $commentAuthor = ($comment['role'] == 'admin') ? $comment['role'] : $comment['firstName'];
                     
-                            echo '<div class="comment"><p>From: ' . $commentAuthor . ' Date: ' . $comment['createdAt'] . '</p>';
-                            echo '<h3>' . $comment['content'] . '</h3></div>';
+                            echo '<div class="commentReply"><p>From: ' . $commentAuthor . ' Date: ' . $comment['createdAt'] . '</p>';
+                            echo '<h4>' . $comment['content'] . '</h4></div>';
                         }
                     } else {
-                        echo 'No comments yet.';
+                        echo '<p style="color: red;">No comments yet.</p>';
                     }
                     
                     
                     // Display comment form for this announcement
-                    echo '<div class="comment"><form action="comment.php" method="POST">';
+                    echo '<form action="comment.php" method="POST">';
                     echo '<input type="hidden" name="announcementId" value="' . $announcementId . '">';
-                    echo '<p>Comments: <input type="text" name="comment"></p>';
-                    echo '<input type="submit" name="addComment" value="Reply">';
+                    echo '<div class="commentReply"><p>Comments: <input type="text" name="comment"></p>';
+                    echo '<input type="submit" name="addComment" value="Reply"></div>';
                     echo '</form></div> ';
 
                 }

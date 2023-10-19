@@ -148,7 +148,7 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
         color: black;
         display: none;
         position: fixed;
-        z-index: 1;
+        z-index: 9999;
         left: 0;
         top: 0;
         width: 100%;
@@ -224,7 +224,7 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
                 </div>
             </form>
             <!-- Navbar-->
-            <p style="color:white; padding-top: 14px;"><?php echo $row['firstName']; ?></p>
+            <h5 style="color:white; padding-top: 6px;"><?php echo $row['firstName']; ?></h5>
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
@@ -307,7 +307,7 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        <?php echo $row['role']; ?>
+                        <h5><?php echo $row['role']; ?></h5>
                     </div>
                 </nav>
             </div>
@@ -443,7 +443,7 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
                                             ?></td>
                                             <td>
                                             <form action = '' method = 'POST'>
-                                            <input type = 'text' name = 'remark'>
+                                            <input type = 'text' name = 'remark' required>
                                             <button type = 'submit' name = 'remark_id' value = "<?php echo $row['activityId']; ?>">Add Remarks</button>
                                             <button type = 'submit' name = 'done_id' value = "<?php echo $row['activityId']; ?>">Done</button>
                                             <button type = 'submit' name = 'cancel_id' value = "<?php echo $row['activityId']; ?>">Cancel</button>

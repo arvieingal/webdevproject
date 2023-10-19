@@ -90,7 +90,7 @@ $userId = $_SESSION[ 'userId' ];
                 </div>
             </form>
             <!-- Navbar-->
-            <p style="color:white; padding-top: 14px;"><?php echo $row['firstName']; ?></p>
+            <h5 style="color:white; padding-top: 6px;"><?php echo $row['firstName']; ?></h5>
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
@@ -177,7 +177,7 @@ $userId = $_SESSION[ 'userId' ];
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        <?php echo $row['role']; ?>
+                        <h5><?php echo $row['role']; ?></h5>
                     </div>
                 </nav>
             </div>
