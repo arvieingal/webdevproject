@@ -445,6 +445,8 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' && isset( $_POST[ 'update' ] ) ) {
                                             <form action = '' method = 'POST'>
                                             <input type = 'text' name = 'remark' required>
                                             <button type = 'submit' name = 'remark_id' value = "<?php echo $row['activityId']; ?>">Add Remarks</button>
+                                            </form>
+                                            <form action="" method="POST">
                                             <button type = 'submit' name = 'done_id' value = "<?php echo $row['activityId']; ?>">Done</button>
                                             <button type = 'submit' name = 'cancel_id' value = "<?php echo $row['activityId']; ?>">Cancel</button>
                                             <button type = 'submit' name = 'delete_id' value = "<?php echo $row['activityId']; ?>">Delete</button>
